@@ -16,11 +16,9 @@ class SimpleUI(QMainWindow):
         layout = QVBoxLayout()
 
         # Ajouter des widgets à la mise en page
-        label = QLabel("Ceci est une étiquette.")
         exit = QPushButton("Exit")
         exit.clicked.connect(self.close)
 
-        layout.addWidget(label)
         layout.addWidget(exit)
 
         # Définir la mise en page comme mise en page du widget central
