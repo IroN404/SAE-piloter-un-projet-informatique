@@ -53,6 +53,7 @@ class SimpleUI(QMainWindow):
         personne.addItem("Personne 1")
         personne.addItem("Personne 2")
         personne.addItem("Personne 3")
+        self.personne = personne
 
         label_date_debut = QLabel("Date de début : ")
         datedebut = QLineEdit()
@@ -96,7 +97,7 @@ class SimpleUI(QMainWindow):
         self.task_widgets.append(date_butoir)
         statut.activated[int].connect(self.on_combobox_activated)
         self.task_widgets.append(statut)
-        personne.activated[int].connect(self.on_combobox_activated)
+        personne.activated[int].connect(self.on_combobox_activated2)
         self.task_widgets.append(personne)
 
     def on_combobox_activated(self, index):
@@ -118,12 +119,34 @@ class SimpleUI(QMainWindow):
             label = QLabel("En attente")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
+
+    def on_combobox_activated2(self, index):
+        # index est l'indice de l'élément sélectionné dans le QComboBox
+        selected_item = self.personne.itemText(index)
+
+        if selected_item == "Personne 1":
+            # Faites quelque chose lorsque "Personne 1" est sélectionné
+            label = QLabel("Personne 1")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
+        elif selected_item == "Personne 2":
+            # Faites quelque chose lorsque "Personne 2" est sélectionné
+            label = QLabel("Personne 2")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
+        elif selected_item == "Personne 3":
+            # Faites quelque chose lorsque "Personne 3" est sélectionné
+            label = QLabel("Personne 3")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
+
     def pressenter(self):
         if self.sender().text():
             label = QLabel(self.sender().text())
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
             self.task_widgets.append(label)
+
 
 
 
