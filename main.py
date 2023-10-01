@@ -210,6 +210,12 @@ class SimpleUI(QMainWindow):
                     padding: 5px;
                 }
                 """)
+            label_tachefinie = QLabel("Tâche finie : ")
+            tachefinie = QCheckBox()
+            self.layout.addWidget(label_tachefinie, self.current_row, 7)
+            self.layout.addWidget(tachefinie, self.current_row + 1, 7)
+            tachefinie.stateChanged.connect(self.checkbox1)
+            self.task_widgets.append(tachefinie)
 
 
 
