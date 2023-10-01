@@ -1,6 +1,7 @@
 import sys
 from PyQt6.QtWidgets import *
-from PyQt6 import QtCore as qt
+from PyQt6 import QtCore as Qt
+import datetime
 
 
 class SimpleUI(QMainWindow):
@@ -121,9 +122,8 @@ class SimpleUI(QMainWindow):
         datedebut = QLineEdit()
         datedebut.setPlaceholderText("Ajouter une date de début")
 
-        label_date_fin = QLabel("Date de fin : ")
-        datefin = QLineEdit()
-        datefin.setPlaceholderText("Ajouter une date de fin")
+        label_date_fin = QLabel("Date de fin réel: ")
+        datefin = QLabel()
 
         label_date_butoir = QLabel("Date butoir : ")
         date_butoir = QLineEdit()
@@ -162,8 +162,6 @@ class SimpleUI(QMainWindow):
         self.task_widgets.append(priorite)
         datedebut.returnPressed.connect(self.pressenter)
         self.task_widgets.append(datedebut)
-        datefin.returnPressed.connect(self.pressenter)
-        self.task_widgets.append(datefin)
         date_butoir.returnPressed.connect(self.pressenter)
         self.task_widgets.append(date_butoir)
         statut.activated[int].connect(self.on_combobox_activated)
@@ -172,6 +170,7 @@ class SimpleUI(QMainWindow):
         self.task_widgets.append(personne)
         tachefinie.stateChanged.connect(self.checkbox1)
         self.task_widgets.append(tachefinie)
+
 
     def on_combobox_activated(self, index):
         # index est l'indice de l'élément sélectionné dans le QComboBox
@@ -193,6 +192,7 @@ class SimpleUI(QMainWindow):
                 """)
 
 
+
         elif selected_item == "En attente":
             # Faites quelque chose lorsque "En attente" est sélectionné
             label = QLabel("En attente")
@@ -207,6 +207,8 @@ class SimpleUI(QMainWindow):
                     padding: 5px;
                 }
                 """)
+
+
 
     def on_combobox_activated2(self, index):
         # index est l'indice de l'élément sélectionné dans le QComboBox
@@ -294,6 +296,8 @@ class SimpleUI(QMainWindow):
                 }
                 """)
 
+
+
     def pressenteretiquette(self):
         if self.sender().text():
             label = QLabel(self.sender().text())
@@ -307,20 +311,30 @@ class SimpleUI(QMainWindow):
                 }
                 """)
 
-    def checkbox1(self, state):
-        label = QLabel("Terminé")
-        self.layout.replaceWidget(self.sender(), label)
-        self.sender().deleteLater()
-        self.task_widgets.append(label)
-        label.setStyleSheet("""
-                        QLabel {
-                            color: green;
-                            font-size: 16px;
-                            font-weight: bold;
-                            padding: 5px;
-                        }
-                        """)
+    def checkbox1(self):
+        labledatedefin = QLabel(datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
+        self.layout.addWidget(labledatedefin, self.current_row + 1, 5)
+        labledatedefin.setStyleSheet("""
+                                QLabel {
+                                    background-color: white;
+                                    border-radius: 2px;
+                                    color: black;
+                                    font-size: 16px;
+                                    padding: 5px;
+                                    margin: 0px;
+                                }
+                                """)
+        statut = QLabel("Terminé")
+        self.layout.addWidget(statut, self.current_row + 1, 1)
+        statut.setStyleSheet("""
+                                QLabel {
+                                    background-color: green;
+                                    color: white;
+                                    font-size: 20px;
+                                    padding: 5px;
 
+                                }
+                                """)
 
 
 
