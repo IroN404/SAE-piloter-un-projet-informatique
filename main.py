@@ -1,6 +1,7 @@
 import sys
 from PyQt6.QtWidgets import *
 
+
 class SimpleUI(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -58,7 +59,7 @@ class SimpleUI(QMainWindow):
         self.current_row += 2
 
         # Créer un QLineEdit pour la saisie initiale
-        label_tache = QLabel("Tâche : ")
+
         tache = QLineEdit()
         tache.setPlaceholderText("Ajouter une tâche")
 
@@ -71,8 +72,12 @@ class SimpleUI(QMainWindow):
         self.statut = statut
 
         label_priorite = QLabel("Priorité : ")
-        priorite = QLineEdit()
+        priorite = QComboBox()
         priorite.setPlaceholderText("Ajouter une priorité")
+        priorite.addItem("P1")
+        priorite.addItem("P2")
+        priorite.addItem("P3")
+        self.priorite = priorite
 
         label_personne = QLabel("Personne : ")
         personne = QComboBox()
@@ -94,8 +99,11 @@ class SimpleUI(QMainWindow):
         date_butoir = QLineEdit()
         date_butoir.setPlaceholderText("Ajouter une date butoir")
 
+        label_tachefinie = QLabel("Tâche finie : ")
+        tachefinie = QCheckBox()
+
         # Ajouter les labels et les champs dans un layout vertical
-        self.layout.addWidget(label_tache, self.current_row, 0)
+
         self.layout.addWidget(tache, self.current_row + 1, 0)
         self.layout.addWidget(label_statut, self.current_row, 1)
         self.layout.addWidget(statut, self.current_row + 1, 1)
@@ -109,6 +117,8 @@ class SimpleUI(QMainWindow):
         self.layout.addWidget(datefin, self.current_row + 1, 5)
         self.layout.addWidget(label_date_butoir, self.current_row, 6)
         self.layout.addWidget(date_butoir, self.current_row + 1, 6)
+        self.layout.addWidget(label_tachefinie, self.current_row, 7)
+        self.layout.addWidget(tachefinie, self.current_row + 1, 7)
 
         # Mettre tous les champs en forme de tableau pour qu'ils soient alignés sur css
 
@@ -117,7 +127,7 @@ class SimpleUI(QMainWindow):
 
         tache.returnPressed.connect(self.pressenter)
         self.task_widgets.append(tache)
-        priorite.returnPressed.connect(self.pressenter)
+        priorite.activated[int].connect(self.on_combobox_activated3)
         self.task_widgets.append(priorite)
         datedebut.returnPressed.connect(self.pressenter)
         self.task_widgets.append(datedebut)
@@ -167,6 +177,26 @@ class SimpleUI(QMainWindow):
         elif selected_item == "Personne 3":
             # Faites quelque chose lorsque "Personne 3" est sélectionné
             label = QLabel("Personne 3")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
+
+    def on_combobox_activated3(self, index):
+        # index est l'indice de l'élément sélectionné dans le QComboBox
+        selected_item = self.priorite.itemText(index)
+
+        if selected_item == "P1":
+            # Faites quelque chose lorsque "P1" est sélectionné
+            label = QLabel("P1")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
+        elif selected_item == "P2":
+            # Faites quelque chose lorsque "P2" est sélectionné
+            label = QLabel("P2")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
+        elif selected_item == "P3":
+            # Faites quelque chose lorsque "P3" est sélectionné
+            label = QLabel("P3")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
