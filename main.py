@@ -129,8 +129,7 @@ class SimpleUI(QMainWindow):
         date_butoir = QLineEdit()
         date_butoir.setPlaceholderText("Ajouter une date butoir")
 
-        label_tachefinie = QLabel("Tâche finie : ")
-        tachefinie = QCheckBox()
+
 
         # Ajouter les labels et les champs dans un layout vertical
 
@@ -148,8 +147,7 @@ class SimpleUI(QMainWindow):
         self.layout.addWidget(datefin, self.current_row + 1, 5)
         self.layout.addWidget(label_date_butoir, self.current_row, 6)
         self.layout.addWidget(date_butoir, self.current_row + 1, 6)
-        self.layout.addWidget(label_tachefinie, self.current_row, 7)
-        self.layout.addWidget(tachefinie, self.current_row + 1, 7)
+
 
         # Mettre tous les champs en forme de tableau pour qu'ils soient alignés sur css
 
@@ -168,8 +166,6 @@ class SimpleUI(QMainWindow):
         self.task_widgets.append(statut)
         personne.activated[int].connect(self.on_combobox_activated2)
         self.task_widgets.append(personne)
-        tachefinie.stateChanged.connect(self.checkbox1)
-        self.task_widgets.append(tachefinie)
 
 
     def on_combobox_activated(self, index):
@@ -190,6 +186,13 @@ class SimpleUI(QMainWindow):
                     padding: 5px;
                 }
                 """)
+
+            label_tachefinie = QLabel("Tâche finie : ")
+            tachefinie = QCheckBox()
+            self.layout.addWidget(label_tachefinie, self.current_row, 7)
+            self.layout.addWidget(tachefinie, self.current_row + 1, 7)
+            tachefinie.stateChanged.connect(self.checkbox1)
+            self.task_widgets.append(tachefinie)
 
 
 
