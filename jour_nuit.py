@@ -1,56 +1,81 @@
-import tkinter as tk
-from PIL import Image, ImageTk
+import sys
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QVBoxLayout
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtCore import Qt, pyqtSignal  # Ajout de l'import de pyqtSignal
+from PIL import Image
+from PIL.ImageQt import ImageQt
 
-def toggle_day_night(event):
-    global is_night_mode
-    if is_night_mode:
-        # Passage en mode jour
-        canvas.configure(bg="white")
-        label.configure(fg="black", bg="white")
-        canvas.itemconfig(logo, image=day_image_resized)
-        is_night_mode = False
-    else:
-        # Passage en mode nuit
-        canvas.configure(bg="black")
-        label.configure(fg="white", bg="black")
-        canvas.itemconfig(logo, image=night_image_resized)
-        is_night_mode = True
+class ClickableLabel(QLabel):
+    clicked = pyqtSignal()  # Correction de l'import
 
-# Créez la fenêtre principale
-root = tk.Tk()
-root.title("Mode Jour/Nuit")
+    def mousePressEvent(self, event):
+        self.clicked.emit()
 
-# Définissez la taille de la fenêtre
-root.geometry("300x300")
+class ModeJourNuitApp(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
 
-# Créez un canevas pour afficher le logo
-canvas = tk.Canvas(root, width=200, height=200, bg="white")
-canvas.pack()
+    def initUI(self):
+        self.setWindowTitle("Mode Jour/Nuit")
+        self.setGeometry(100, 100, 300, 300)
 
-# Chargez le logo initial pour le mode jour
-day_image = Image.open("logo_day.png")
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
 
-# Redimensionnez l'image du jour pour l'adapter à la taille du canevas
-width, height = 150, 150
-day_image_resized = ImageTk.PhotoImage(day_image.resize((width, height)))
+        self.main_layout = QVBoxLayout()
+        self.central_widget.setLayout(self.main_layout)
 
-# Affichez le logo initial (jour)
-logo = canvas.create_image(width // 2, height // 2, image=day_image_resized)
+        # Créez un canevas pour afficher le logo
+        self.canvas = QWidget()
+        self.canvas.setStyleSheet("background-color: white;")
+        self.canvas_layout = QVBoxLayout()
+        self.canvas.setLayout(self.canvas_layout)
 
-# Créez un label pour afficher du texte
-label = tk.Label(root, text="Cliquez sur le logo pour basculer entre le mode jour et nuit", fg="black", bg="white")
-label.pack()
+        # Chargez le logo initial pour le mode jour
+        self.day_image = Image.open("logo_day.png")
+        self.day_image = self.day_image.resize((150, 150), Image.ANTIALIAS)
+        self.day_image = ImageQt(self.day_image)
+        self.day_pixmap = QPixmap.fromImage(self.day_image)
+        self.day_label = ClickableLabel()
+        self.day_label.setPixmap(self.day_pixmap)
+        self.day_label.clicked.connect(self.toggle_day_night)
+        self.canvas_layout.addWidget(self.day_label)
 
-# Attachez un événement de clic au logo sur le canevas
-canvas.tag_bind(logo, '<Button-1>', toggle_day_night)
+        self.main_layout.addWidget(self.canvas)
 
-# Chargez le logo pour le mode nuit
-night_image = Image.open("logo_night.png")
+        # Créez un label pour afficher du texte
+        self.label = QLabel("Cliquez sur le logo pour basculer entre le mode jour et nuit")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.main_layout.addWidget(self.label)
 
-# Redimensionnez l'image de nuit pour l'adapter à la taille du canevas
-night_image_resized = ImageTk.PhotoImage(night_image.resize((width, height)))
+        # Définissez une variable pour suivre le mode actuel (jour ou nuit)
+        self.is_night_mode = False
 
-# Définissez une variable pour suivre le mode actuel (jour ou nuit)
-is_night_mode = False
+    def toggle_day_night(self):
+        if self.is_night_mode:
+            # Passage en mode jour
+            self.canvas.setStyleSheet("background-color: white;")
+            self.label.setStyleSheet("color: black; background-color: transparent;")
+            self.day_label.setPixmap(self.day_pixmap)
+            self.is_night_mode = False
+        else:
+            # Passage en mode nuit
+            self.canvas.setStyleSheet("background-color: grey;")
+            self.label.setStyleSheet("color: white; background-color: grey;")
+            # Chargez le logo de nuit (remplacez "logo_night.png" par le chemin de votre image de nuit)
+            night_image = Image.open("logo_night.png")
+            night_image = night_image.resize((150, 150), Image.ANTIALIAS)
+            self.night_image = ImageQt(night_image)
+            self.night_pixmap = QPixmap.fromImage(self.night_image)
+            self.day_label.setPixmap(self.night_pixmap)
+            self.is_night_mode = True
 
-root.mainloop()
+def main():
+    app = QApplication(sys.argv)
+    mainWindow = ModeJourNuitApp()
+    mainWindow.show()
+    app.exec()
+
+if __name__ == "__main__":
+    main()
