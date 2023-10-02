@@ -1,12 +1,12 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QVBoxLayout
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtCore import Qt, pyqtSignal  # Ajout de l'import de pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSignal
 from PIL import Image
 from PIL.ImageQt import ImageQt
 
 class ClickableLabel(QLabel):
-    clicked = pyqtSignal()  # Correction de l'import
+    clicked = pyqtSignal()
 
     def mousePressEvent(self, event):
         self.clicked.emit()
