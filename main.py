@@ -122,9 +122,6 @@ class SimpleUI(QMainWindow):
         datedebut = QLineEdit()
         datedebut.setPlaceholderText("Ajouter une date de début")
 
-        label_date_fin = QLabel("Date de fin réel: ")
-        datefin = QLabel()
-
         label_date_butoir = QLabel("Date butoir : ")
         date_butoir = QLineEdit()
         date_butoir.setPlaceholderText("Ajouter une date butoir")
@@ -147,8 +144,6 @@ class SimpleUI(QMainWindow):
         self.layout.addWidget(personne, self.current_row + 1, 3)
         self.layout.addWidget(label_date_debut, self.current_row, 4)
         self.layout.addWidget(datedebut, self.current_row + 1, 4)
-        self.layout.addWidget(label_date_fin, self.current_row, 5)
-        self.layout.addWidget(datefin, self.current_row + 1, 5)
         self.layout.addWidget(label_date_butoir, self.current_row, 6)
         self.layout.addWidget(date_butoir, self.current_row + 1, 6)
         self.layout.addWidget(label_tachefinie, self.current_row, 7)
@@ -316,7 +311,7 @@ class SimpleUI(QMainWindow):
 
     def checkbox1(self):
         labledatedefin = QLabel(datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
-        self.layout.addWidget(labledatedefin, self.current_row + 1, 5)
+        self.layout.replaceWidget(self.sender(), labledatedefin )
         labledatedefin.setStyleSheet("""
                                 QLabel {
                                     background-color: white;
@@ -327,23 +322,9 @@ class SimpleUI(QMainWindow):
                                     margin: 0px;
                                 }
                                 """)
-        statut = QLabel("Terminé")
-        self.layout.addWidget(statut, self.current_row + 1, 1)
-        statut.setStyleSheet("""
-                                QLabel {
-                                    background-color: green;
-                                    color: white;
-                                    font-size: 20px;
-                                    padding: 5px;
-
-                                }
-                                """)
-        label = QLabel("!")
-        self.layout.replaceWidget(self.sender(), label)
-
         self.sender().deleteLater()
         self.task_widgets.append(labledatedefin)
-        self.task_widgets.append(statut)
+
 
 
 
