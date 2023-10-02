@@ -38,19 +38,6 @@ class SimpleUI(QMainWindow):
             """)
         self.layout = QGridLayout()
         self.layout.addWidget(label, 0, 0, 1, 8)  # Ligne 0, Colonne 0, 1 ligne, 8 colonnes
-
-        # Créer une mise en page verticale
-        """
-        self.layout = QGridLayout()
-        exit_button = QPushButton("Exit")
-        exit_button.clicked.connect(self.close)
-        self.layout.addWidget(exit_button, 0, 3)  # Ligne 0, Colonne 3
-        exit_button.setStyleSheet(
-            
-        label = QLabel("ToDoList")
-        self.layout.addWidget(label, 1, 3)  # Ligne 1, Colonne 3
-        """
-
         self.task_widgets = []  # Pour stocker les widgets de tâche
         self.current_row = 2  # Initialiser la ligne actuelle
 
