@@ -1,11 +1,26 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <h1 align="center">Welcome to SAE-piloter-un-projet-informatique 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-V1.0-blue.svg?cacheSeconds=2592000" />
 </p>
 
+
+
 > Projet Make TO do LIST
 
-## Author
+## Description
+
+
+## Installation 
+<i class="fa fa-download"></i>
+Avant de lancer le script, vérifier bien d'avoir lancé le script qui installe tout les imports nécessaire.
+## Utilisation
+
+## Exemples
+<i class="fa fa-plane"></i>
+## Author <i class="fa fa-user"></i>
+
 
 👤 **LOSSER Julien**
 👤 **MOHAREB Yassem  Product Owner**
