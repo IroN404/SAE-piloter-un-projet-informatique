@@ -133,7 +133,7 @@ class SimpleUI(QMainWindow):
         self.layout.addWidget(tachefinie, self.current_row + 1, 7)
 
 
-
+fddfdff
         # Mettre tous les champs en forme de tableau pour qu'ils soient alignés sur css
 
 
