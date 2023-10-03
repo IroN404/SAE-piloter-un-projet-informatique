@@ -73,10 +73,10 @@ class SimpleUI(QMainWindow):
         datedebut.setDisplayFormat("dd/MM/yyyy")
 
         label_date_butoir = QLabel("Date butoir : ")
-        datebutoir = QLineEdit()
-        """datebutoir.setDateTime(datetime.today())
+        datebutoir = QDateTimeEdit(self)
+        datebutoir.setDateTime(datetime.today())
         datebutoir.setCalendarPopup(True)
-        datebutoir.setDisplayFormat("dd/MM/yyyy")"""
+        datebutoir.setDisplayFormat("dd/MM/yyyy")
 
         label_tachefinie = QLabel("Tâche finie : ")
         tachefinie = QCheckBox()
@@ -96,10 +96,10 @@ class SimpleUI(QMainWindow):
         self.layout.addWidget(personne, self.current_row + 1, 3)
         self.layout.addWidget(label_date_debut, self.current_row, 4)
         self.layout.addWidget(datedebut, self.current_row + 1, 4)
-        self.layout.addWidget(label_date_butoir, self.current_row, 6)
-        self.layout.addWidget(datebutoir, self.current_row + 1, 6)
-        self.layout.addWidget(label_tachefinie, self.current_row, 7)
-        self.layout.addWidget(tachefinie, self.current_row + 1, 7)
+        self.layout.addWidget(label_date_butoir, self.current_row, 5)
+        self.layout.addWidget(datebutoir, self.current_row + 1, 5)
+        self.layout.addWidget(label_tachefinie, self.current_row, 6)
+        self.layout.addWidget(tachefinie, self.current_row + 1, 6)
 
 
 
@@ -114,7 +114,7 @@ class SimpleUI(QMainWindow):
         self.task_widgets.append(priorite)
         datedebut.dateTimeChanged.connect(self.pressenter)
         self.task_widgets.append(datedebut)
-        datebutoir.returnPressed.connect(self.pressenter)
+        datebutoir.dateTimeChanged.connect(self.pressenter)
         self.task_widgets.append(datebutoir)
         statut.activated[int].connect(self.on_combobox_activated)
         self.task_widgets.append(statut)
