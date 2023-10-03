@@ -1,7 +1,7 @@
 import ast
 import subprocess
 
-# Remplacez le chemin vers votre script Python ici
+# script Python
 script_path = 'main.py'
 
 # Lire le contenu du script
