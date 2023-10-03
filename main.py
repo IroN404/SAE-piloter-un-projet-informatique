@@ -102,10 +102,11 @@ class SimpleUI(QMainWindow):
         personne.setPlaceholderText("Ajouter une personne")
 
         label_date_debut = QLabel("Date de début : ")
-        datedebut = QTimeEdit()
+        datedebut = QDateTimeEdit(self)
         datedebut.setDateTime(datetime.today())
         datedebut.setCalendarPopup(True)
-        datedebut.setDateTime(datetime.today())
+        datedebut.setDisplayFormat("dd/MM/yyyy")
+
 
 
         label_date_butoir = QLabel("Date butoir : ")
@@ -147,7 +148,7 @@ class SimpleUI(QMainWindow):
         self.task_widgets.append(priorite)
         datedebut.dateTimeChanged.connect(self.pressenter)
         self.task_widgets.append(datedebut)
-        date_butoir.returnPressed.connect(self.pressenter)
+        date_butoir.returnPressed.connect(self.dateconfirm)
         self.task_widgets.append(date_butoir)
         statut.activated[int].connect(self.on_combobox_activated)
         self.task_widgets.append(statut)
@@ -311,6 +312,8 @@ class SimpleUI(QMainWindow):
         self.task_widgets.append(labledatedefin)
 
 
+    def dateconfirm(self):
+        pass
 
 
 
