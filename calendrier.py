@@ -14,6 +14,37 @@ class DateSelectionWidget(QWidget):
         self.date_time_var.setDateTime(datetime.today())
         layout.addWidget(self.date_time_var)
 
+        # Appliquer le style sombre au calendrier
+        self.date_time_var.setStyleSheet("""
+            QCalendarWidget QWidget {
+                alternate-background-color: #2a2a2a;
+                background-color: #1d1d1d;
+            }
+            QCalendarWidget QAbstractItemView:enabled {
+                color: white;
+                font-size: 12px;
+                selection-background-color: #555555;
+                selection-color: #dddddd;
+            }
+            QCalendarWidget QAbstractItemView:disabled {
+                color: #808080;
+            }
+            QCalendarWidget QHeaderView {
+                background-color: #333333;
+                color: white;
+            }
+            QCalendarWidget QToolButton {
+                background-color: #333333;
+                color: white;
+            }
+            QCalendarWidget QToolButton::left-arrow {
+                image: url(left_arrow_white.png);
+            }
+            QCalendarWidget QToolButton::right-arrow {
+                image: url(right_arrow_white.png);
+            }
+        """)
+
         self.valider_button = QPushButton("Valider la date et l'heure", self)
         self.valider_button.clicked.connect(self.valider_date)
         layout.addWidget(self.valider_button)
