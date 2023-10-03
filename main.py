@@ -3,6 +3,22 @@ from PyQt6.QtWidgets import *
 from PyQt6 import QtCore as Qt
 from datetime import datetime
 
+# Constantes pour les chemins des logos
+LOGO_PATHS = {
+    "day": "logo_day.png",
+    "night": "logo_night.png",
+}
+
+STYLES = {
+    "day": {
+        "canvas": "background-color: white;",
+        "label": "color: black; background-color: transparent;",
+    },
+    "night": {
+        "canvas": "background-color: grey;",
+        "label": "color: white; background-color: grey;",
+    },
+}
 
 class SimpleUI(QMainWindow):
     def __init__(self):
@@ -28,10 +44,49 @@ class SimpleUI(QMainWindow):
         plus.clicked.connect(self.ajoutertache)
         self.layout.addWidget(plus, self.current_row, 3)  # Ligne actuelle, Colonne 3
 
-
+        # Ajouter un bouton pour basculer entre le mode jour et le mode nuit
+        self.day_night_button = QPushButton("Mode Jour")
+        self.day_night_button.clicked.connect(self.toggle_day_night)
+        self.layout.addWidget(self.day_night_button, self.current_row, 6)
 
         # Définir la mise en page comme mise en page du widget central
         central_widget.setLayout(self.layout)
+
+        # Initialisation du mode actuel (jour ou nuit)
+        self.is_night_mode = False
+
+    def toggle_day_night(self):
+        # Inversion du mode actuel
+        self.is_night_mode = not self.is_night_mode
+
+        # Appliquer le mode jour ou nuit en fonction de l'état actuel
+        if self.is_night_mode:
+            self.set_night_mode()
+        else:
+            self.set_day_mode()
+
+        # Mettre à jour le texte du bouton
+        if self.is_night_mode:
+            self.day_night_button.setText("Mode Nuit")
+        else:
+            self.day_night_button.setText("Mode Jour")
+
+    def set_day_mode(self):
+        # Changer la couleur de fond du widget central en blanc
+        self.centralWidget().setStyleSheet("background-color: white;"
+                                           "color: black;")
+        # Changer la couleur du texte du label en noir
+        for widget in self.task_widgets:
+            if isinstance(widget, QLabel):
+                widget.setStyleSheet("color: black;")
+
+    def set_night_mode(self):
+        # Changer la couleur de fond du widget central en gris
+        self.centralWidget().setStyleSheet("background-color: grey;")
+        # Changer la couleur du texte du label en blanc
+        for widget in self.task_widgets:
+            if isinstance(widget, QLabel):
+                widget.setStyleSheet("color: white;")
 
     def ajoutertache(self):
         # Incrémenter la ligne actuelle pour ajouter les widgets en dessous
@@ -49,10 +104,8 @@ class SimpleUI(QMainWindow):
         statut = QComboBox()
         statut.setPlaceholderText("Ajouter un statut")
         statut.addItem("En cours")
-        """statut.addItem("Terminé")"""
         statut.addItem("En attente")
         self.statut = statut
-        
 
         label_priorite = QLabel("Priorité : ")
         priorite = QComboBox()
@@ -81,9 +134,6 @@ class SimpleUI(QMainWindow):
         label_tachefinie = QLabel("Tâche finie : ")
         tachefinie = QCheckBox()
 
-
-
-
         # Ajouter les labels et les champs dans un layout vertical
 
         self.layout.addWidget(etiquette, self.current_row, 0)
@@ -101,11 +151,7 @@ class SimpleUI(QMainWindow):
         self.layout.addWidget(label_tachefinie, self.current_row, 6)
         self.layout.addWidget(tachefinie, self.current_row + 1, 6)
 
-
-
         # Mettre tous les champs en forme de tableau pour qu'ils soient alignés sur css
-
-
 
         etiquette.returnPressed.connect(self.pressenteretiquette)
         tache.returnPressed.connect(self.pressenter)
@@ -123,7 +169,6 @@ class SimpleUI(QMainWindow):
         tachefinie.stateChanged.connect(self.checkbox1)
         self.task_widgets.append(tachefinie)
 
-
     def on_combobox_activated(self, index):
         # index est l'indice de l'élément sélectionné dans le QComboBox
         selected_item = self.statut.itemText(index)
@@ -134,33 +179,9 @@ class SimpleUI(QMainWindow):
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
-
         elif selected_item == "En attente":
             # Faites quelque chose lorsque "En attente" est sélectionné
             label = QLabel("En attente")
-            self.layout.replaceWidget(self.sender(), label)
-            self.sender().deleteLater()
-
-
-
-
-    def on_combobox_activated2(self, index):
-        # index est l'indice de l'élément sélectionné dans le QComboBox
-        selected_item = self.personne.itemText(index)
-
-        if selected_item == "Personne 1":
-            # Faites quelque chose lorsque "Personne 1" est sélectionné
-            label = QLabel("Personne 1")
-            self.layout.replaceWidget(self.sender(), label)
-            self.sender().deleteLater()
-        elif selected_item == "Personne 2":
-            # Faites quelque chose lorsque "Personne 2" est sélectionné
-            label = QLabel("Personne 2")
-            self.layout.replaceWidget(self.sender(), label)
-            self.sender().deleteLater()
-        elif selected_item == "Personne 3":
-            # Faites quelque chose lorsque "Personne 3" est sélectionné
-            label = QLabel("Personne 3")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
@@ -193,9 +214,6 @@ class SimpleUI(QMainWindow):
             self.sender().deleteLater()
             self.task_widgets.append(label)
 
-
-
-
     def pressenteretiquette(self):
         if self.sender().text():
             label = QLabel(self.sender().text())
@@ -203,23 +221,17 @@ class SimpleUI(QMainWindow):
             self.sender().deleteLater()
             self.task_widgets.append(label)
 
-
     def checkbox1(self):
         labledatedefin = QLabel(datetime.now().strftime("%d-%m-%Y %H:%M"))
-        self.layout.replaceWidget(self.sender(), labledatedefin )
+        self.layout.replaceWidget(self.sender(), labledatedefin)
         self.sender().deleteLater()
         self.task_widgets.append(labledatedefin)
-
-
-
-
-
 
 def main():
     app = QApplication(sys.argv)
     window = SimpleUI()
     window.show()
-    window.showMaximized() # Fayçal
+    window.showMaximized()  # Fayçal
     sys.exit(app.exec())
 
 if __name__ == "__main__":
