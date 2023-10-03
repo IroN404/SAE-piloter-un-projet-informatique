@@ -98,12 +98,8 @@ class SimpleUI(QMainWindow):
         self.priorite = priorite
 
         label_personne = QLabel("Personne : ")
-        personne = QComboBox()
+        personne = QLineEdit()
         personne.setPlaceholderText("Ajouter une personne")
-        personne.addItem("Personne 1")
-        personne.addItem("Personne 2")
-        personne.addItem("Personne 3")
-        self.personne = personne
 
         label_date_debut = QLabel("Date de début : ")
         datedebut = QLineEdit()
@@ -153,7 +149,7 @@ class SimpleUI(QMainWindow):
         self.task_widgets.append(date_butoir)
         statut.activated[int].connect(self.on_combobox_activated)
         self.task_widgets.append(statut)
-        personne.activated[int].connect(self.on_combobox_activated2)
+        personne.returnPressed.connect(self.pressenter)
         self.task_widgets.append(personne)
         tachefinie.stateChanged.connect(self.checkbox1)
         self.task_widgets.append(tachefinie)
