@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import *
 from PyQt6 import QtCore as Qt
-import datetime
+from datetime import datetime
 
 
 class SimpleUI(QMainWindow):
@@ -102,8 +102,11 @@ class SimpleUI(QMainWindow):
         personne.setPlaceholderText("Ajouter une personne")
 
         label_date_debut = QLabel("Date de début : ")
-        datedebut = QLineEdit()
-        datedebut.setPlaceholderText("Ajouter une date de début")
+        datedebut = QTimeEdit()
+        datedebut.setDateTime(datetime.today())
+        datedebut.setCalendarPopup(True)
+        datedebut.setDateTime(datetime.today())
+
 
         label_date_butoir = QLabel("Date butoir : ")
         date_butoir = QLineEdit()
@@ -143,7 +146,7 @@ class SimpleUI(QMainWindow):
         self.task_widgets.append(tache)
         priorite.activated[int].connect(self.on_combobox_activated3)
         self.task_widgets.append(priorite)
-        datedebut.returnPressed.connect(self.pressenter)
+        datedebut.dateTimeChanged.connect(self.pressenter)
         self.task_widgets.append(datedebut)
         date_butoir.returnPressed.connect(self.pressenter)
         self.task_widgets.append(date_butoir)
@@ -307,6 +310,8 @@ class SimpleUI(QMainWindow):
                                 """)
         self.sender().deleteLater()
         self.task_widgets.append(labledatedefin)
+
+
 
 
 
