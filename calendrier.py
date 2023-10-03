@@ -13,7 +13,6 @@ class DateSelectionWidget(QWidget):
         self.date_time_var.setCalendarPopup(True)
         self.date_time_var.setDateTime(datetime.today())
         layout.addWidget(self.date_time_var)
-
         self.valider_button = QPushButton("Valider la date et l'heure", self)
         self.valider_button.clicked.connect(self.valider_date)
         layout.addWidget(self.valider_button)
