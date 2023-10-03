@@ -9,11 +9,11 @@
 
 > Projet Make TO do LIST
 
-## Description
+## Description 
 
 
 ## Installation 
-<i class="fa fa-download"></i>
+<i class="fa-solid fa-download"></i>
 Avant de lancer le script, vérifier bien d'avoir lancé le script qui installe tout les imports nécessaire.
 ## Utilisation
 
