@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import *
 from PyQt6 import QtCore as Qt
-import datetime
+from datetime import datetime
 
 
 class SimpleUI(QMainWindow):
@@ -13,31 +13,13 @@ class SimpleUI(QMainWindow):
 
         # Créer un widget central
         central_widget = QWidget()
-        central_widget.setStyleSheet("""
-            QWidget {
-                background-color: white;
-                color: black;
-                margin: 0px;
-                padding: 0px;
-            }
-            """)
+
         self.setCentralWidget(central_widget)
 
         label = QLabel("ToDoList")
-        label.setStyleSheet("""
-            QLabel {
-                background-color: grey;
-                border-radius: 5px;
-                border: 3px solid black;
-                color: white;
-                text-align: center;
-                font-size: 16px;
-                padding: 5px;
-                margin: 0px;
-            }
-            """)
+
         self.layout = QGridLayout()
-        self.layout.addWidget(label, 0, 0, 1, 8)  # Ligne 0, Colonne 0, 1 ligne, 8 colonnes
+        self.layout.addWidget(label, 0, 0, 1, 6)  # Ligne 0, Colonne 0, 1 ligne, 8 colonnes
         self.task_widgets = []  # Pour stocker les widgets de tâche
         self.current_row = 2  # Initialiser la ligne actuelle
 
@@ -45,14 +27,7 @@ class SimpleUI(QMainWindow):
         plus = QPushButton("+")
         plus.clicked.connect(self.ajoutertache)
         self.layout.addWidget(plus, self.current_row, 3)  # Ligne actuelle, Colonne 3
-        plus.setStyleSheet("""
-            QPushButton {
-                background-color: black;
-                border-radius: 5px;
-                color: white;
-                font-size: 16px;
-            }
-            """)
+
 
 
         # Définir la mise en page comme mise en page du widget central
@@ -66,17 +41,7 @@ class SimpleUI(QMainWindow):
 
         etiquette = QLineEdit()
         etiquette.setPlaceholderText("Ajouter une étiquette")
-        etiquette.setStyleSheet("""
-            QLineEdit {
-                width: 20px;
-                background-color: white;
-                border-radius: 2px;
-                color: black;
-                font-size: 10px;
-                padding: 5px;
-                margin: 0px;
-            }
-            """)
+
         tache = QLineEdit()
         tache.setPlaceholderText("Ajouter une tâche")
 
@@ -98,20 +63,20 @@ class SimpleUI(QMainWindow):
         self.priorite = priorite
 
         label_personne = QLabel("Personne : ")
-        personne = QComboBox()
+        personne = QLineEdit()
         personne.setPlaceholderText("Ajouter une personne")
-        personne.addItem("Personne 1")
-        personne.addItem("Personne 2")
-        personne.addItem("Personne 3")
-        self.personne = personne
 
         label_date_debut = QLabel("Date de début : ")
-        datedebut = QLineEdit()
-        datedebut.setPlaceholderText("Ajouter une date de début")
+        datedebut = QDateTimeEdit(self)
+        datedebut.setDateTime(datetime.today())
+        datedebut.setCalendarPopup(True)
+        datedebut.setDisplayFormat("dd/MM/yyyy")
 
         label_date_butoir = QLabel("Date butoir : ")
-        date_butoir = QLineEdit()
-        date_butoir.setPlaceholderText("Ajouter une date butoir")
+        datebutoir = QDateTimeEdit(self)
+        datebutoir.setDateTime(datetime.today())
+        datebutoir.setCalendarPopup(True)
+        datebutoir.setDisplayFormat("dd/MM/yyyy")
 
         label_tachefinie = QLabel("Tâche finie : ")
         tachefinie = QCheckBox()
@@ -131,10 +96,10 @@ class SimpleUI(QMainWindow):
         self.layout.addWidget(personne, self.current_row + 1, 3)
         self.layout.addWidget(label_date_debut, self.current_row, 4)
         self.layout.addWidget(datedebut, self.current_row + 1, 4)
-        self.layout.addWidget(label_date_butoir, self.current_row, 6)
-        self.layout.addWidget(date_butoir, self.current_row + 1, 6)
-        self.layout.addWidget(label_tachefinie, self.current_row, 7)
-        self.layout.addWidget(tachefinie, self.current_row + 1, 7)
+        self.layout.addWidget(label_date_butoir, self.current_row, 5)
+        self.layout.addWidget(datebutoir, self.current_row + 1, 5)
+        self.layout.addWidget(label_tachefinie, self.current_row, 6)
+        self.layout.addWidget(tachefinie, self.current_row + 1, 6)
 
 
 
@@ -147,13 +112,13 @@ class SimpleUI(QMainWindow):
         self.task_widgets.append(tache)
         priorite.activated[int].connect(self.on_combobox_activated3)
         self.task_widgets.append(priorite)
-        datedebut.returnPressed.connect(self.pressenter)
+        datedebut.dateTimeChanged.connect(self.pressenter)
         self.task_widgets.append(datedebut)
-        date_butoir.returnPressed.connect(self.pressenter)
-        self.task_widgets.append(date_butoir)
+        datebutoir.dateTimeChanged.connect(self.pressenter)
+        self.task_widgets.append(datebutoir)
         statut.activated[int].connect(self.on_combobox_activated)
         self.task_widgets.append(statut)
-        personne.activated[int].connect(self.on_combobox_activated2)
+        personne.returnPressed.connect(self.pressenter)
         self.task_widgets.append(personne)
         tachefinie.stateChanged.connect(self.checkbox1)
         self.task_widgets.append(tachefinie)
@@ -168,30 +133,14 @@ class SimpleUI(QMainWindow):
             label = QLabel("En cours")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
-            label.setStyleSheet("""
-                QLabel {
-                    background-color: blue;
-                    border-radius: 5px;
-                    color: white;
-                    font-size: 16px;
-                    padding: 5px;
-                }
-                """)
+
 
         elif selected_item == "En attente":
             # Faites quelque chose lorsque "En attente" est sélectionné
             label = QLabel("En attente")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
-            label.setStyleSheet("""
-                QLabel {
-                    background-color: #a319ff;
-                    border-radius: 5px;
-                    color: white;
-                    font-size: 16px;
-                    padding: 5px;
-                }
-                """)
+
 
 
 
@@ -224,43 +173,18 @@ class SimpleUI(QMainWindow):
             label = QLabel("P1")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
-            label.setStyleSheet("""
-                QLabel {
-                    background-color: red;
-                    border-radius: 5px;
-                    color: white;
-                    font-size: 16px;
-                    padding: 5px;
-                }
-                """)
+
         elif selected_item == "P2":
             # Faites quelque chose lorsque "P2" est sélectionné
             label = QLabel("P2")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
-            label.setStyleSheet("""
-                QLabel {
-                    background-color: orange;
-                    border-radius: 5px;
-                    color: white;
-                    font-size: 16px;
-                    padding: 5px;
-                }
-                """)
+
         elif selected_item == "P3":
             # Faites quelque chose lorsque "P3" est sélectionné
             label = QLabel("P3")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
-            label.setStyleSheet("""
-                QLabel {
-                    background-color: #ffc400;
-                    border-radius: 5px;
-                    color: white;
-                    font-size: 16px;
-                    padding: 5px;
-                }
-                """)
 
     def pressenter(self):
         if self.sender().text():
@@ -268,18 +192,7 @@ class SimpleUI(QMainWindow):
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
             self.task_widgets.append(label)
-            label.setStyleSheet("""
-                QLabel {
-                    background-color: white;
-                    border-radius: 
-                    2px;
-                    border: 3px solid grey;
-                    color: black;
-                    font-size: 16px;
-                    padding: 5px;
-                    margin: 0px;
-                }
-                """)
+
 
 
 
@@ -289,28 +202,14 @@ class SimpleUI(QMainWindow):
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
             self.task_widgets.append(label)
-            label.setStyleSheet("""
-                QLabel {
-                    color: black;
-                    font-size: 10px;
-                }
-                """)
+
 
     def checkbox1(self):
-        labledatedefin = QLabel(datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
+        labledatedefin = QLabel(datetime.now().strftime("%d-%m-%Y %H:%M"))
         self.layout.replaceWidget(self.sender(), labledatedefin )
-        labledatedefin.setStyleSheet("""
-                                QLabel {
-                                    background-color: white;
-                                    border-radius: 2px;
-                                    color: black;
-                                    font-size: 16px;
-                                    padding: 5px;
-                                    margin: 0px;
-                                }
-                                """)
         self.sender().deleteLater()
         self.task_widgets.append(labledatedefin)
+
 
 
 
