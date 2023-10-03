@@ -19,7 +19,7 @@ class SimpleUI(QMainWindow):
         label = QLabel("ToDoList")
 
         self.layout = QGridLayout()
-        self.layout.addWidget(label, 0, 0, 1, 8)  # Ligne 0, Colonne 0, 1 ligne, 8 colonnes
+        self.layout.addWidget(label, 0, 0, 1, 6)  # Ligne 0, Colonne 0, 1 ligne, 8 colonnes
         self.task_widgets = []  # Pour stocker les widgets de tâche
         self.current_row = 2  # Initialiser la ligne actuelle
 
