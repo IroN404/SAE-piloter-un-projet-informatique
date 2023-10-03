@@ -219,7 +219,7 @@ def main():
     app = QApplication(sys.argv)
     window = SimpleUI()
     window.show()
-    window.showMaximized()
+    window.showMaximized() # Fayçal
     sys.exit(app.exec())
 
 if __name__ == "__main__":
