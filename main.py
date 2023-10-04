@@ -1,7 +1,9 @@
 import sys
+import PyQt6
+import datetime
 from PyQt6.QtWidgets import *
 from PyQt6 import QtCore as Qt
-from datetime import datetime
+
 
 # Constantes pour les chemins des logos
 LOGO_PATHS = {
