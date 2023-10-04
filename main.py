@@ -31,6 +31,8 @@ class SimpleUI(QMainWindow):
 
         # Créer un widget central
         central_widget = QWidget()
+        central_widget.setStyleSheet("background-color: white;"
+                                           "color: black;")
 
         self.setCentralWidget(central_widget)
 
