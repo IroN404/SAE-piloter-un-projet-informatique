@@ -176,14 +176,14 @@ class SimpleUI(QMainWindow):
         if selected_item == "En cours":
             # Faites quelque chose lorsque "En cours" est sélectionné
             label = QLabel("En cours")
-            label.setStyleSheet("border: 1px solid;background-color: bleu;")  # Changer la couleur
+            label.setStyleSheet("border: 1px solid;background-color: blue;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
         elif selected_item == "En attente":
             # Faites quelque chose lorsque "En attente" est sélectionné
             label = QLabel("En attente")
-            label.setStyleSheet("border: 1px solid;background-color: vert;")  # Changer la couleur
+            label.setStyleSheet("border: 1px solid;background-color: vert;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
