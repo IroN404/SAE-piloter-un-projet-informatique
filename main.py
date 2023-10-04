@@ -6,9 +6,9 @@ from PyQt6.QtGui import QPixmap, QIcon, QPalette, QColor, QFont
 
 
 
-# Constantes pour les chemins des logos
+# Constantes porur les chemins des logos
 LOGO_PATHS = {
-    "day": "logo_day.png",
+    "day": "306171270_775524596894236_3262669943395101325_n.jpeg",
     "night": "logo_night.png",
 }
 
@@ -17,7 +17,7 @@ STYLES = {
         "canvas": "background-color: white; color: black;",
     },
     "night": {
-        "canvas": "background-color: #696969; color: white;",
+        "canvas": "background-color: #434343; color: white;",
     },
 }
 
@@ -83,7 +83,7 @@ class SimpleUI(QMainWindow):
             self.centralWidget().setStyleSheet(STYLES["night"]["canvas"])
 
         else:
-            logo_path = 'logo_day.png'
+            logo_path = '306171270_775524596894236_3262669943395101325_n.jpeg'
             # Changer la couleur de fond du widget central en blanc
             self.centralWidget().setStyleSheet(STYLES["day"]["canvas"])
 
