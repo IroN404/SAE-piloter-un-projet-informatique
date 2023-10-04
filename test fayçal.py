@@ -6,10 +6,10 @@ from PyQt6.QtGui import QPixmap, QIcon, QPalette, QColor, QFont
 
 
 
-# Constantes pour les chemins des logos
+# Constantes porur les chemins des logos
 LOGO_PATHS = {
-    "day": "logo_day.png",
-    "night": "logo_night.png",
+    "day": "Capture d’écran 2023-10-04 à 15.04.59.png",
+    "night": "Capture d’écran 2023-10-04 à 14.55.04.png",
 }
 
 STYLES = {
@@ -17,7 +17,7 @@ STYLES = {
         "canvas": "background-color: white; color: black;",
     },
     "night": {
-        "canvas": "background-color: #696969; color: white;",
+        "canvas": "background-color: #434343; color: white;",
     },
 }
 
@@ -26,6 +26,8 @@ STYLES = {
 class SimpleUI(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        self.layout = QGridLayout()
 
 
         self.setWindowTitle("ToDoList")
@@ -36,11 +38,10 @@ class SimpleUI(QMainWindow):
         central_widget.setStyleSheet("background-color: white;"
                                            "color: black;")
 
+
         self.setCentralWidget(central_widget)
 
         self.layout = QGridLayout()
-        self.layout.setContentsMargins(10, 10, 10, 10)  # Ajuster les marges si nécessaire
-        self.layout.setSpacing(10)  # Ajuster l'espacement si nécessaire
         self.task_widgets = []  # Pour stocker les widgets de tâche
         self.current_row = 2  # Initialiser la ligne actuelle
 
@@ -49,13 +50,12 @@ class SimpleUI(QMainWindow):
         plus = QPushButton("Ajouter une Tache")
         plus.clicked.connect(self.ajoutertache)
         plus.setStyleSheet("border: 1px solid ;")
-        self.layout.addWidget(plus, self.current_row, 0, 1,7)
+        self.layout.addWidget(plus, self.current_row, 0, 1, 7)
         # Ligne actuelle, Colonne 3
 
         # Ajouter une image pour le logo clickable qui change en fonction du mode jour ou nuit
-        # Ajouter une image pour le logo clickable qui change en fonction du mode jour ou nuit
-        pixmap = QPixmap('logo_day.png')
-        pixmap = pixmap.scaled(310, 150)  # Ajuster la taille si nécessaire
+        pixmap = QPixmap('Capture d’écran 2023-10-04 à 15.04.59.png')
+        pixmap = pixmap.scaled(310, 150)
         self.logo = QLabel()
         self.logo.setPixmap(pixmap)
         self.logo.mousePressEvent = self.toggle_day_night
@@ -71,21 +71,21 @@ class SimpleUI(QMainWindow):
 
 
 
+
     def toggle_day_night(self, event):
         # Inversion du mode actuel
         self.is_night_mode = not self.is_night_mode
 
         # Charger l'image du logo appropriée en fonction du mode jour ou nuit
         if self.is_night_mode:
-            logo_path = 'logo_night.png'
+            logo_path = 'Capture d’écran 2023-10-04 à 14.55.04.png'
             # Changer la couleur de fond du widget central en gris
             self.centralWidget().setStyleSheet(STYLES["night"]["canvas"])
 
         else:
-            logo_path = 'logo_day.png'
+            logo_path = 'Capture d’écran 2023-10-04 à 15.04.59.png'
             # Changer la couleur de fond du widget central en blanc
             self.centralWidget().setStyleSheet(STYLES["day"]["canvas"])
-
 
         pixmap = QPixmap(logo_path)
         pixmap = pixmap.scaled(310, 150)
@@ -179,14 +179,14 @@ class SimpleUI(QMainWindow):
         if selected_item == "En cours":
             # Faites quelque chose lorsque "En cours" est sélectionné
             label = QLabel("En cours")
-            label.setStyleSheet("border: 1px solid;background-color: bleu;")  # Changer la couleur
+            label.setStyleSheet("border: 1px solid;background-color: blue;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
         elif selected_item == "En attente":
             # Faites quelque chose lorsque "En attente" est sélectionné
             label = QLabel("En attente")
-            label.setStyleSheet("border: 1px solid;background-color: vert;")  # Changer la couleur
+            label.setStyleSheet("border: 1px solid;background-color: vert;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
