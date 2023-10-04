@@ -9,12 +9,12 @@ from PyQt6.QtGui import QPixmap, QIcon, QPalette, QColor, QFont
 # Constantes pour les chemins des logos
 LOGO_PATHS = {
     "day": "logo_day.png",
-    "night": "logo_night.png",
+    "night": "logo_day.png",
 }
 
 STYLES = {
     "day": {
-        "canvas": "background-color: white; color: black;",
+        "canvas": "background-color: #white; color: black;",
     },
     "night": {
         "canvas": "background-color: #696969; color: white;",
@@ -74,7 +74,7 @@ class SimpleUI(QMainWindow):
 
         # Charger l'image du logo appropriée en fonction du mode jour ou nuit
         if self.is_night_mode:
-            logo_path = 'logo_night.png'
+            logo_path = 'logo_day.png'
             # Changer la couleur de fond du widget central en gris
             self.centralWidget().setStyleSheet(STYLES["night"]["canvas"])
 
@@ -104,7 +104,6 @@ class SimpleUI(QMainWindow):
         statut = QComboBox()
         statut.setPlaceholderText("Ajouter un statut")
         statut.addItem("En cours")
-
         statut.addItem("En attente")
         self.statut = statut
 
@@ -174,30 +173,39 @@ class SimpleUI(QMainWindow):
         # index est l'indice de l'élément sélectionné dans le QComboBox
         selected_item = self.statut.itemText(index)
 
-        label = QLabel(selected_item)
-        self.layout.replaceWidget(self.sender(), label)
-        self.sender().deleteLater()
-        self.task_widgets.append(label)
-
         if selected_item == "En cours":
-            label.setStyleSheet("border: 1px solid;background-color: blue;")
+            # Faites quelque chose lorsque "En cours" est sélectionné
+            label = QLabel("En cours")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
+
         elif selected_item == "En attente":
-            label.setStyleSheet("border: 1px solid;background-color: green;")
+            # Faites quelque chose lorsque "En attente" est sélectionné
+            label = QLabel("En attente")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
 
     def on_combobox_activated3(self, index):
         # index est l'indice de l'élément sélectionné dans le QComboBox
         selected_item = self.priorite.itemText(index)
-        label = QLabel(selected_item)
-        self.layout.replaceWidget(self.sender(), label)
-        self.sender().deleteLater()
-        self.task_widgets.append(label)
 
         if selected_item == "P1":
-            label.setStyleSheet("border: 1px solid;background-color: red;")  # Changer la couleur en rouge
+            # Faites quelque chose lorsque "P1" est sélectionné
+            label = QLabel("P1")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
+
         elif selected_item == "P2":
-            label.setStyleSheet("border: 1px solid;background-color: orange;")  # Changer la couleur en orange
+            # Faites quelque chose lorsque "P2" est sélectionné
+            label = QLabel("P2")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
+
         elif selected_item == "P3":
-            label.setStyleSheet("border: 1px solid;background-color: yellow;")  # Changer la couleur en jaune
+            # Faites quelque chose lorsque "P3" est sélectionné
+            label = QLabel("P3")
+            self.layout.replaceWidget(self.sender(), label)
+            self.sender().deleteLater()
 
     def pressenter(self):
         if self.sender().text():
