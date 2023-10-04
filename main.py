@@ -50,7 +50,7 @@ class SimpleUI(QMainWindow):
         plus = QPushButton("Ajouter une Tache")
         plus.clicked.connect(self.ajoutertache)
         plus.setStyleSheet("border: 1px solid ;")
-        self.layout.addWidget(plus, self.current_row, 0, 1, 7)
+        self.layout.addWidget(plus, 1, 0, alignment=Qt.Qt.AlignmentFlag.AlignCenter | Qt.Qt.AlignmentFlag.AlignTop)
         # Ligne actuelle, Colonne 3
 
         # Ajouter une image pour le logo clickable qui change en fonction du mode jour ou nuit
@@ -59,7 +59,7 @@ class SimpleUI(QMainWindow):
         self.logo = QLabel()
         self.logo.setPixmap(pixmap)
         self.logo.mousePressEvent = self.toggle_day_night
-        self.layout.addWidget(self.logo, 0, 0, 1, 1, alignment=Qt.Qt.AlignmentFlag.AlignLeft | Qt.Qt.AlignmentFlag.AlignTop)
+        self.layout.addWidget(self.logo, 0, 0, 1, 1, alignment=Qt.Qt.AlignmentFlag.AlignLeft)
 
 
 
@@ -92,6 +92,9 @@ class SimpleUI(QMainWindow):
         self.logo.setPixmap(pixmap)
 
     def ajoutertache(self):
+        # Changement de bouton de place au milieu de la fentre
+        self.layout.addWidget(self.sender(), 1, 1, 2, 3 )
+
         # Incrémenter la ligne actuelle pour ajouter les widgets en dessous
         self.current_row += 2
 
@@ -136,6 +139,7 @@ class SimpleUI(QMainWindow):
 
         label_tachefinie = QLabel("Tâche finie : ")
         tachefinie = QCheckBox()
+
 
         # Ajouter les labels et les champs dans un layout vertical
 
