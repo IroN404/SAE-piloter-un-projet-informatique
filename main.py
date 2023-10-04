@@ -9,12 +9,12 @@ from PyQt6.QtGui import QPixmap, QIcon, QPalette, QColor, QFont
 # Constantes pour les chemins des logos
 LOGO_PATHS = {
     "day": "logo_day.png",
-    "night": "logo_day.png",
+    "night": "logo_night.png",
 }
 
 STYLES = {
     "day": {
-        "canvas": "background-color: #white; color: black;",
+        "canvas": "background-color: white; color: black;",
     },
     "night": {
         "canvas": "background-color: #696969; color: white;",
@@ -52,7 +52,7 @@ class SimpleUI(QMainWindow):
 
         # Ajouter une image pour le logo clickable qui change en fonction du mode jour ou nuit
         pixmap = QPixmap('logo_day.png')
-        pixmap = pixmap.scaled(250, 150)
+        pixmap = pixmap.scaled(310, 150)
         self.logo = QLabel()
         self.logo.setPixmap(pixmap)
         self.logo.mousePressEvent = self.toggle_day_night
@@ -74,7 +74,7 @@ class SimpleUI(QMainWindow):
 
         # Charger l'image du logo appropriée en fonction du mode jour ou nuit
         if self.is_night_mode:
-            logo_path = 'logo_day.png'
+            logo_path = 'logo_night.png'
             # Changer la couleur de fond du widget central en gris
             self.centralWidget().setStyleSheet(STYLES["night"]["canvas"])
 
@@ -85,7 +85,7 @@ class SimpleUI(QMainWindow):
 
 
         pixmap = QPixmap(logo_path)
-        pixmap = pixmap.scaled(250, 150)
+        pixmap = pixmap.scaled(310, 150)
         self.logo.setPixmap(pixmap)
 
     def ajoutertache(self):
