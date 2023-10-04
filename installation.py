@@ -1,6 +1,10 @@
 import ast
 import subprocess
 
+
+# Exécute la commande pour mettre à jour pip
+subprocess.run(["pip3", "install", "--upgrade", "pip"])
+
 # Installation de tous les paquets nécessaires dans le code main
 print("Installation des dépendances...")
 with open("main.py", "r") as f:
@@ -8,7 +12,7 @@ with open("main.py", "r") as f:
         if line.startswith("import"):
             pass
         elif line.startswith("from"):
-            subprocess.run(["pip", "install", line.split()[1]])
+            subprocess.run(["pip3", "install", line.split()[1]])
         else:
             break
 
