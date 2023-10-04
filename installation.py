@@ -17,7 +17,7 @@ with open("main.py", "r") as f:
             break
 
 # Une fois l'installation terminée, créez un fichier d'indicateur pour indiquer que l'installation est terminée
-with open("installation.txt", "w") as indicator_file:
+with open("installation.txt", "w",encoding="utf-8") as indicator_file:
     indicator_file.write("Installation terminée")
 
 
