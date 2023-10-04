@@ -17,7 +17,7 @@ STYLES = {
         "canvas": "background-color: white; color: black;",
     },
     "night": {
-        "canvas": "background-color: #696969; color: white;",
+        "canvas": "background-color: #434343; color: white;",
     },
 }
 
