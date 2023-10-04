@@ -63,7 +63,7 @@ class SimpleUI(QMainWindow):
         # Inversion du mode actuel
         self.is_night_mode = not self.is_night_mode
 
-        # Appliquer le mode jour ou nuit en fonction de l'état actuel
+        # Appliquer le mode jour ou nuit en fonction de la valeur de self.is_night_mode
         if self.is_night_mode:
             self.set_night_mode()
         else:
@@ -235,7 +235,7 @@ def main():
     app = QApplication(sys.argv)
     window = SimpleUI()
     window.show()
-    window.showMaximized()  # Fayçal
+    window.showMaximized()
     sys.exit(app.exec())
 
 if __name__ == "__main__":
