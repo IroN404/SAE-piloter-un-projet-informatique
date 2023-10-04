@@ -6,7 +6,7 @@ from PyQt6.QtGui import QPixmap, QIcon, QPalette, QColor, QFont
 
 
 
-# Constantes pour les chemins des logos
+# Constantes porur les chemins des logos
 LOGO_PATHS = {
     "day": "306171270_775524596894236_3262669943395101325_n.jpeg",
     "night": "logo_night.png",
