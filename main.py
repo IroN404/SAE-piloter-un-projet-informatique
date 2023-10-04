@@ -14,7 +14,7 @@ LOGO_PATHS = {
 
 STYLES = {
     "day": {
-        "canvas": "background-color: #FDFFDC; color: black;",
+        "canvas": "background-color: #white; color: black;",
     },
     "night": {
         "canvas": "background-color: #696969; color: white;",
@@ -33,7 +33,7 @@ class SimpleUI(QMainWindow):
 
         # Créer un widget central
         central_widget = QWidget()
-        central_widget.setStyleSheet("background-color: #FDFFDC;"
+        central_widget.setStyleSheet("background-color: white;"
                                            "color: black;")
 
         self.setCentralWidget(central_widget)
@@ -43,9 +43,12 @@ class SimpleUI(QMainWindow):
         self.current_row = 2  # Initialiser la ligne actuelle
 
         # Ajouter des widgets à la mise en page
-        plus = QPushButton("+")
+
+        plus = QPushButton("Ajouter une Tache")
         plus.clicked.connect(self.ajoutertache)
-        self.layout.addWidget(plus, self.current_row, 3)  # Ligne actuelle, Colonne 3
+        plus.setStyleSheet("border: 1px solid ;")
+        self.layout.addWidget(plus, self.current_row, 3)
+        # Ligne actuelle, Colonne 3
 
         # Ajouter une image pour le logo clickable qui change en fonction du mode jour ou nuit
         pixmap = QPixmap('logo_day.png')
