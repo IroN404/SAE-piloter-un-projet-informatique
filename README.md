@@ -5,7 +5,7 @@
 <p>
     <img alt="Version" src="https://img.shields.io/badge/version-V1.0-blue.svg?cacheSeconds=2592000" />
     <img alt="PyCharm - Python 3.10" src="https://img.shields.io/badge/PyCharm-Python%203.10-brightgreen.svg"/>
-    <img alt="PyCharm - Python 3.10" src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png" width="15" />
+    <img alt="logo Python" src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png" width="15" />
 
 </p>
 
