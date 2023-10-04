@@ -59,7 +59,7 @@ class SimpleUI(QMainWindow):
         self.logo = QLabel()
         self.logo.setPixmap(pixmap)
         self.logo.mousePressEvent = self.toggle_day_night
-        self.layout.addWidget(self.logo, 0, 0)
+        self.layout.addWidget(self.logo, 0, 0, 1, 1, alignment=Qt.Qt.AlignmentFlag.AlignLeft | Qt.Qt.AlignmentFlag.AlignTop)
 
 
 
@@ -69,9 +69,6 @@ class SimpleUI(QMainWindow):
         # Initialisation du mode actuel (jour ou nuit)
         self.is_night_mode = False
 
-        # Création des lables pour mise en page
-        label1 = QLabel("aaaaaaaaaa")
-        self.layout.addWidget(label1, 1, 1)
 
 
 
@@ -89,7 +86,6 @@ class SimpleUI(QMainWindow):
             logo_path = 'logo_day.png'
             # Changer la couleur de fond du widget central en blanc
             self.centralWidget().setStyleSheet(STYLES["day"]["canvas"])
-
 
         pixmap = QPixmap(logo_path)
         pixmap = pixmap.scaled(310, 150)
