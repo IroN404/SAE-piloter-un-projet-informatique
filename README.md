@@ -7,27 +7,31 @@
 
 
 
-> Projet Make TO do LIST
+> Projet TO do LIST
 
 ## Description 
-
+Le but de ce projet est de coder une "To do List" uniquement en python avec une application graphique.
+Chaque membre du groupe est ratacher à une tache précise dans le projet.
 
 ## Installation 
 
-Avant de lancer le script, vérifier bien d'avoir lancé le script qui installe tout les imports nécessaire.
+Avant de lancer le script (main.py), vérifier bien d'avoir lancé le script qui installe tous les imports nécessaires.
+
+Pour cela, vous avez juste à lancer le fichier "installation.py" dans votre IDE.
+Installtion.py lit les imports du fichier main.py puis les installes.
+Pour vérifier la compatibilité, il met également pip3 à jour.
+
 ## Utilisation
+Pour pouvoir utilise la To do List, il vous suffit de lancer main.py.
 
-## Exemples
-<i class="fa fa-plane"></i>
-## Author <i class="fa fa-user"></i>
-
-
-👤 **LOSSER Julien**
-👤 **MOHAREB Yassem  Product Owner**
+## Author 
+👤 **Yassem Mohareb Product Owner**
+👤 **Bahir Boudouma-Lambarki Scrum Master**
+👤 **Julien Losser**
 👤 **Fayçal Bloul**
 👤 **Gregory Maitre**
-👤 **Bahir Boudouma-Lambarki Scrum Master**
 👤 **Ivan Tefang**
+
 
 
 ## 🤝 Contributing
