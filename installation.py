@@ -6,7 +6,7 @@ print("Installation des dépendances...")
 with open("main.py", "r") as f:
     for line in f.readlines():
         if line.startswith("import"):
-            subprocess.run(["pip", "install", line.split()[1]])
+            pass
         elif line.startswith("from"):
             subprocess.run(["pip", "install", line.split()[1]])
         else:
