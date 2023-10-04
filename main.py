@@ -4,6 +4,15 @@ from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateTimeEdit, QLabel, QLineEd
 from PyQt6 import QtCore as Qt
 from PyQt6.QtGui import QPixmap
 
+import subprocess
+import os
+
+# Vérifie si le fichier d'indicateur existe
+if not os.path.exists("installation_done.txt"):
+    # Exécute le fichier installation.py s'il n'a pas encore été exécuté
+    subprocess.run(["python", "installation.py"])
+    # Le reste du code du fichier main.py sera exécuté après l'installation ou si elle a déjà été effectuée.
+
 
 
 # Constantes porur les chemins des logos

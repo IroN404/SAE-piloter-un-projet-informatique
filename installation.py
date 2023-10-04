@@ -16,6 +16,9 @@ with open("main.py", "r") as f:
         else:
             break
 
+# Une fois l'installation terminée, créez un fichier d'indicateur pour indiquer que l'installation est terminée
+with open("installation_done.txt", "w") as indicator_file:
+    indicator_file.write("Installation terminée")
 
 
 print("Installation des dépendances terminée.")
