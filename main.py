@@ -2,6 +2,7 @@ import sys
 from datetime import datetime
 from PyQt6.QtWidgets import *
 from PyQt6 import QtCore as Qt
+from PyQt6.QtGui import QPixmap, QIcon, QPalette, QColor, QFont
 
 
 
@@ -13,33 +14,31 @@ LOGO_PATHS = {
 
 STYLES = {
     "day": {
-        "canvas": "background-color: white;",
-        "label": "color: black; background-color: transparent;",
+        "canvas": "background-color: #FDFFDC; color: black;",
     },
     "night": {
-        "canvas": "background-color: grey;",
-        "label": "color: white; background-color: grey;",
+        "canvas": "background-color: #696969; color: white;",
     },
 }
+
+
 
 class SimpleUI(QMainWindow):
     def __init__(self):
         super().__init__()
+
 
         self.setWindowTitle("ToDoList")
         self.setGeometry(200, 300, 1500, 300)  # Définir la taille de la fenêtre
 
         # Créer un widget central
         central_widget = QWidget()
-        central_widget.setStyleSheet("background-color: white;"
+        central_widget.setStyleSheet("background-color: #FDFFDC;"
                                            "color: black;")
 
         self.setCentralWidget(central_widget)
 
-        label = QLabel("ToDoList")
-
         self.layout = QGridLayout()
-        self.layout.addWidget(label, 0, 0, 1, 6)  # Ligne 0, Colonne 0, 1 ligne, 8 colonnes
         self.task_widgets = []  # Pour stocker les widgets de tâche
         self.current_row = 2  # Initialiser la ligne actuelle
 
@@ -48,10 +47,15 @@ class SimpleUI(QMainWindow):
         plus.clicked.connect(self.ajoutertache)
         self.layout.addWidget(plus, self.current_row, 3)  # Ligne actuelle, Colonne 3
 
-        # Ajouter un bouton pour basculer entre le mode jour et le mode nuit
-        self.day_night_button = QPushButton("Mode Jour")
-        self.day_night_button.clicked.connect(self.toggle_day_night)
-        self.layout.addWidget(self.day_night_button, self.current_row, 6)
+        # Ajouter une image pour le logo clickable qui change en fonction du mode jour ou nuit
+        pixmap = QPixmap('logo_day.png')
+        pixmap = pixmap.scaled(250, 150)
+        self.logo = QLabel()
+        self.logo.setPixmap(pixmap)
+        self.logo.mousePressEvent = self.toggle_day_night
+        self.layout.addWidget(self.logo, 0, 0, 1, 7)
+
+
 
         # Définir la mise en page comme mise en page du widget central
         central_widget.setLayout(self.layout)
@@ -59,38 +63,27 @@ class SimpleUI(QMainWindow):
         # Initialisation du mode actuel (jour ou nuit)
         self.is_night_mode = False
 
-    def toggle_day_night(self):
+
+
+    def toggle_day_night(self, event):
         # Inversion du mode actuel
         self.is_night_mode = not self.is_night_mode
 
-        # Appliquer le mode jour ou nuit en fonction de la valeur de self.is_night_mode
+        # Charger l'image du logo appropriée en fonction du mode jour ou nuit
         if self.is_night_mode:
-            self.set_night_mode()
+            logo_path = 'logo_night.png'
+            # Changer la couleur de fond du widget central en gris
+            self.centralWidget().setStyleSheet(STYLES["night"]["canvas"])
+
         else:
-            self.set_day_mode()
+            logo_path = 'logo_day.png'
+            # Changer la couleur de fond du widget central en blanc
+            self.centralWidget().setStyleSheet(STYLES["day"]["canvas"])
 
-        # Mettre à jour le texte du bouton
-        if self.is_night_mode:
-            self.day_night_button.setText("Mode Nuit")
-        else:
-            self.day_night_button.setText("Mode Jour")
 
-    def set_day_mode(self):
-        # Changer la couleur de fond du widget central en blanc
-        self.centralWidget().setStyleSheet("background-color: white;"
-                                           "color: black;")
-        # Changer la couleur du texte du label en noir
-        for widget in self.task_widgets:
-            if isinstance(widget, QLabel):
-                widget.setStyleSheet("color: black;")
-
-    def set_night_mode(self):
-        # Changer la couleur de fond du widget central en gris
-        self.centralWidget().setStyleSheet("background-color: grey;")
-        # Changer la couleur du texte du label en blanc
-        for widget in self.task_widgets:
-            if isinstance(widget, QLabel):
-                widget.setStyleSheet("color: white;")
+        pixmap = QPixmap(logo_path)
+        pixmap = pixmap.scaled(250, 150)
+        self.logo.setPixmap(pixmap)
 
     def ajoutertache(self):
         # Incrémenter la ligne actuelle pour ajouter les widgets en dessous
