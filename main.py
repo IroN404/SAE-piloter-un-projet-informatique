@@ -8,7 +8,7 @@ import subprocess
 import os
 
 # Vérifie si le fichier d'indicateur existe
-if not os.path.exists("installation_done.txt"):
+if not os.path.exists("installation.txt"):
     # Exécute le fichier installation.py s'il n'a pas encore été exécuté
     subprocess.run(["python", "installation.py"])
     # Le reste du code du fichier main.py sera exécuté après l'installation ou si elle a déjà été effectuée.
