@@ -236,6 +236,7 @@ def main():
     app = QApplication(sys.argv)
     window = SimpleUI()
     window.show()
+    window.showwindow()
     sys.exit(app.exec())
 
 if __name__ == "__main__":
