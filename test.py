@@ -9,12 +9,12 @@ from PyQt6.QtGui import QPixmap, QIcon, QPalette, QColor, QFont
 # Constantes pour les chemins des logos
 LOGO_PATHS = {
     "day": "logo_day.png",
-    "night": "logo_night.png",
+    "night": "logo_day.png",
 }
 
 STYLES = {
     "day": {
-        "canvas": "background-color: white; color: black;",
+        "canvas": "background-color: #FDFFDC; color: black;",
     },
     "night": {
         "canvas": "background-color: #696969; color: white;",
@@ -27,17 +27,14 @@ class SimpleUI(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.layout = QGridLayout()
-
 
         self.setWindowTitle("ToDoList")
         self.setGeometry(200, 300, 1500, 300)  # Définir la taille de la fenêtre
 
         # Créer un widget central
         central_widget = QWidget()
-        central_widget.setStyleSheet("background-color: white;"
+        central_widget.setStyleSheet("background-color: #FDFFDC;"
                                            "color: black;")
-
 
         self.setCentralWidget(central_widget)
 
@@ -46,20 +43,17 @@ class SimpleUI(QMainWindow):
         self.current_row = 2  # Initialiser la ligne actuelle
 
         # Ajouter des widgets à la mise en page
-
-        plus = QPushButton("Ajouter une Tache")
+        plus = QPushButton("+")
         plus.clicked.connect(self.ajoutertache)
-        plus.setStyleSheet("border: 1px solid ;")
-        self.layout.addWidget(plus, self.current_row, 0, 1, 7)
-        # Ligne actuelle, Colonne 3
+        self.layout.addWidget(plus, self.current_row, 3)  # Ligne actuelle, Colonne 3
 
         # Ajouter une image pour le logo clickable qui change en fonction du mode jour ou nuit
         pixmap = QPixmap('logo_day.png')
-        pixmap = pixmap.scaled(310, 150)
+        pixmap = pixmap.scaled(250, 150)
         self.logo = QLabel()
         self.logo.setPixmap(pixmap)
         self.logo.mousePressEvent = self.toggle_day_night
-        self.layout.addWidget(self.logo, 0, 0)
+        self.layout.addWidget(self.logo, 0, 0, 1, 7)
 
 
 
@@ -69,10 +63,6 @@ class SimpleUI(QMainWindow):
         # Initialisation du mode actuel (jour ou nuit)
         self.is_night_mode = False
 
-        # Création des lables pour mise en page
-        label1 = QLabel("aaaaaaaaaa")
-        self.layout.addWidget(label1, 1, 1)
-
 
 
     def toggle_day_night(self, event):
@@ -81,7 +71,7 @@ class SimpleUI(QMainWindow):
 
         # Charger l'image du logo appropriée en fonction du mode jour ou nuit
         if self.is_night_mode:
-            logo_path = 'logo_night.png'
+            logo_path = 'logo_day.png'
             # Changer la couleur de fond du widget central en gris
             self.centralWidget().setStyleSheet(STYLES["night"]["canvas"])
 
@@ -92,7 +82,7 @@ class SimpleUI(QMainWindow):
 
 
         pixmap = QPixmap(logo_path)
-        pixmap = pixmap.scaled(310, 150)
+        pixmap = pixmap.scaled(250, 150)
         self.logo.setPixmap(pixmap)
 
     def ajoutertache(self):
@@ -183,14 +173,12 @@ class SimpleUI(QMainWindow):
         if selected_item == "En cours":
             # Faites quelque chose lorsque "En cours" est sélectionné
             label = QLabel("En cours")
-            label.setStyleSheet("border: 1px solid;background-color: blue;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
         elif selected_item == "En attente":
             # Faites quelque chose lorsque "En attente" est sélectionné
             label = QLabel("En attente")
-            label.setStyleSheet("border: 1px solid;background-color: vert;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
@@ -201,21 +189,18 @@ class SimpleUI(QMainWindow):
         if selected_item == "P1":
             # Faites quelque chose lorsque "P1" est sélectionné
             label = QLabel("P1")
-            label.setStyleSheet("border: 1px solid;background-color: red;")  # Changer la couleur en rouge
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
         elif selected_item == "P2":
             # Faites quelque chose lorsque "P2" est sélectionné
             label = QLabel("P2")
-            label.setStyleSheet("border: 1px solid;background-color: orange;")  # Changer la couleur en orange
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
         elif selected_item == "P3":
             # Faites quelque chose lorsque "P3" est sélectionné
             label = QLabel("P3")
-            label.setStyleSheet("border: 1px solid;background-color: yellow;")  # Changer la couleur en jaune
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
@@ -243,7 +228,6 @@ def main():
     app = QApplication(sys.argv)
     window = SimpleUI()
     window.show()
-    window.showMaximized()
     sys.exit(app.exec())
 
 if __name__ == "__main__":
