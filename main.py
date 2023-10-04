@@ -14,7 +14,7 @@ LOGO_PATHS = {
 
 STYLES = {
     "day": {
-        "canvas": "background-color: #white; color: black;",
+        "canvas": "background-color: white; color: black;",
     },
     "night": {
         "canvas": "background-color: #696969; color: white;",
@@ -104,6 +104,7 @@ class SimpleUI(QMainWindow):
         statut = QComboBox()
         statut.setPlaceholderText("Ajouter un statut")
         statut.addItem("En cours")
+
         statut.addItem("En attente")
         self.statut = statut
 
@@ -173,39 +174,30 @@ class SimpleUI(QMainWindow):
         # index est l'indice de l'élément sélectionné dans le QComboBox
         selected_item = self.statut.itemText(index)
 
-        if selected_item == "En cours":
-            # Faites quelque chose lorsque "En cours" est sélectionné
-            label = QLabel("En cours")
-            self.layout.replaceWidget(self.sender(), label)
-            self.sender().deleteLater()
+        label = QLabel(selected_item)
+        self.layout.replaceWidget(self.sender(), label)
+        self.sender().deleteLater()
+        self.task_widgets.append(label)
 
+        if selected_item == "En cours":
+            label.setStyleSheet("border: 1px solid;background-color: blue;")
         elif selected_item == "En attente":
-            # Faites quelque chose lorsque "En attente" est sélectionné
-            label = QLabel("En attente")
-            self.layout.replaceWidget(self.sender(), label)
-            self.sender().deleteLater()
+            label.setStyleSheet("border: 1px solid;background-color: green;")
 
     def on_combobox_activated3(self, index):
         # index est l'indice de l'élément sélectionné dans le QComboBox
         selected_item = self.priorite.itemText(index)
+        label = QLabel(selected_item)
+        self.layout.replaceWidget(self.sender(), label)
+        self.sender().deleteLater()
+        self.task_widgets.append(label)
 
         if selected_item == "P1":
-            # Faites quelque chose lorsque "P1" est sélectionné
-            label = QLabel("P1")
-            self.layout.replaceWidget(self.sender(), label)
-            self.sender().deleteLater()
-
+            label.setStyleSheet("border: 1px solid;background-color: red;")  # Changer la couleur en rouge
         elif selected_item == "P2":
-            # Faites quelque chose lorsque "P2" est sélectionné
-            label = QLabel("P2")
-            self.layout.replaceWidget(self.sender(), label)
-            self.sender().deleteLater()
-
+            label.setStyleSheet("border: 1px solid;background-color: orange;")  # Changer la couleur en orange
         elif selected_item == "P3":
-            # Faites quelque chose lorsque "P3" est sélectionné
-            label = QLabel("P3")
-            self.layout.replaceWidget(self.sender(), label)
-            self.sender().deleteLater()
+            label.setStyleSheet("border: 1px solid;background-color: yellow;")  # Changer la couleur en jaune
 
     def pressenter(self):
         if self.sender().text():
