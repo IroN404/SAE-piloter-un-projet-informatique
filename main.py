@@ -176,12 +176,14 @@ class SimpleUI(QMainWindow):
         if selected_item == "En cours":
             # Faites quelque chose lorsque "En cours" est sélectionné
             label = QLabel("En cours")
+            label.setStyleSheet("border: 1px solid;background-color: bleu;")  # Changer la couleur
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
         elif selected_item == "En attente":
             # Faites quelque chose lorsque "En attente" est sélectionné
             label = QLabel("En attente")
+            label.setStyleSheet("border: 1px solid;background-color: vert;")  # Changer la couleur
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
@@ -192,18 +194,21 @@ class SimpleUI(QMainWindow):
         if selected_item == "P1":
             # Faites quelque chose lorsque "P1" est sélectionné
             label = QLabel("P1")
+            label.setStyleSheet("border: 1px solid;background-color: red;")  # Changer la couleur en rouge
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
         elif selected_item == "P2":
             # Faites quelque chose lorsque "P2" est sélectionné
             label = QLabel("P2")
+            label.setStyleSheet("border: 1px solid;background-color: orange;")  # Changer la couleur en orange
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
         elif selected_item == "P3":
             # Faites quelque chose lorsque "P3" est sélectionné
             label = QLabel("P3")
+            label.setStyleSheet("border: 1px solid;background-color: yellow;")  # Changer la couleur en jaune
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
 
