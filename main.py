@@ -47,7 +47,7 @@ class SimpleUI(QMainWindow):
         plus = QPushButton("Ajouter une Tache")
         plus.clicked.connect(self.ajoutertache)
         plus.setStyleSheet("border: 1px solid ;")
-        self.layout.addWidget(plus, self.current_row, 3)
+        self.layout.addWidget(plus, self.current_row, 2, 1, 2)
         # Ligne actuelle, Colonne 3
 
         # Ajouter une image pour le logo clickable qui change en fonction du mode jour ou nuit
@@ -56,7 +56,7 @@ class SimpleUI(QMainWindow):
         self.logo = QLabel()
         self.logo.setPixmap(pixmap)
         self.logo.mousePressEvent = self.toggle_day_night
-        self.layout.addWidget(self.logo, 0, 0, 1, 7)
+        self.layout.addWidget(self.logo, 0, 0, 1, 1)
 
 
 
