@@ -1,6 +1,6 @@
 import sys
 from datetime import datetime
-from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateTimeEdit, QLabel, QLineEdit, QPushButton, QMainWindow, QApplication, QWidget, QGridLayout
+from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateTimeEdit, QLabel, QLineEdit, QPushButton, QMainWindow, QApplication, QWidget, QGridLayout, QVBoxLayout, QScrollArea
 from PyQt6 import QtCore as Qt
 from PyQt6.QtGui import QPixmap
 
@@ -10,7 +10,7 @@ import os
 # Vérifie si le fichier d'indicateur existe
 if not os.path.exists("installation.txt"):
     # Exécute le fichier installation.py s'il n'a pas encore été exécuté
-    subprocess.run(["python", "installation.py"])
+    subprocess.run(["python3", "installation.py"])
     # Le reste du code du fichier main.py sera exécuté après l'installation ou si elle a déjà été effectuée.
 
 
@@ -70,35 +70,30 @@ class SimpleUI(QMainWindow):
         self.logo.mousePressEvent = self.toggle_day_night
         self.layout.addWidget(self.logo, 0, 0, 1, 1, alignment=Qt.Qt.AlignmentFlag.AlignLeft)
 
-
-
         # Définir la mise en page comme mise en page du widget central
         central_widget.setLayout(self.layout)
 
         # Initialisation du mode actuel (jour ou nuit)
         self.is_night_mode = False
 
-
-
+        scrollArea = QScrollArea()
+        scrollArea.setWidgetResizable(True)
+        scrollArea.setWidget(central_widget)
+        self.setCentralWidget(scrollArea)
 
     def toggle_day_night(self, event):
         # Inversion du mode actuel
         self.is_night_mode = not self.is_night_mode
 
         # Charger l'image du logo appropriée en fonction du mode jour ou nuit
-        if self.is_night_mode:
-            logo_path = 'logo_night.png'
-            # Changer la couleur de fond du widget central en gris
-            self.centralWidget().setStyleSheet(STYLES["night"]["canvas"])
-
-        else:
-            logo_path = 'logo_day.png'
-            # Changer la couleur de fond du widget central en blanc
-            self.centralWidget().setStyleSheet(STYLES["day"]["canvas"])
-
+        logo_path = LOGO_PATHS["night" if self.is_night_mode else "day"]
         pixmap = QPixmap(logo_path)
         pixmap = pixmap.scaled(310, 150)
         self.logo.setPixmap(pixmap)
+
+        # Changer la couleur de fond du widget central de la QScrollArea
+        widget = self.centralWidget().widget()
+        widget.setStyleSheet(STYLES["night" if self.is_night_mode else "day"]["canvas"])
 
     def ajoutertache(self):
         # Changement de bouton de place au milieu de la fentre
