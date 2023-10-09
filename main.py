@@ -1,6 +1,6 @@
 import sys
 from datetime import datetime
-from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateTimeEdit, QLabel, QLineEdit, QPushButton, QMainWindow, QApplication, QWidget, QGridLayout, QVBoxLayout, QScrollArea
+from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateTimeEdit, QLabel, QLineEdit, QPushButton, QMainWindow, QApplication, QWidget, QGridLayout, QScrollArea
 from PyQt6 import QtCore as Qt
 from PyQt6.QtGui import QPixmap
 
@@ -246,6 +246,7 @@ class SimpleUI(QMainWindow):
 def main():
     app = QApplication(sys.argv)
     window = SimpleUI()
+    window.showMaximized()
     window.show()
     window.showMaximized()
     sys.exit(app.exec())
