@@ -1,35 +1,24 @@
 import ast
 import subprocess
 
-#mise a jour de pip
-subprocess.check_call('pip3 install --upgrade pip')
 
-# script Python
-script_path = 'main.py'
+# Exécute la commande pour mettre à jour pip
+subprocess.run(["pip3", "install", "--upgrade", "pip"])
 
-# Lire le contenu du script
-with open(script_path, 'r') as file:
-    code = file.read()
+# Installation de tous les paquets nécessaires dans le code main
+print("Installation des dépendances...")
+with open("main.py", "r") as f:
+    for line in f.readlines():
+        if line.startswith("import"):
+            pass
+        elif line.startswith("from"):
+            subprocess.run(["pip3", "install", line.split()[1]])
+        else:
+            break
 
-# Analyser le code source pour extraire les noms des modules importés
-tree = ast.parse(code)
-imports = []
+# Une fois l'installation terminée, créez un fichier d'indicateur pour indiquer que l'installation est terminée
+with open("installation.txt", "w",encoding="utf-8") as indicator_file:
+    indicator_file.write("Installation terminée")
 
-
-for node in ast.walk(tree):
-    if isinstance(node, ast.Import):
-        for name in node.names:
-            imports.append(name.name)
-    elif isinstance(node, ast.ImportFrom):
-        module = node.module
-        for name in node.names:
-            imports.append(f"{module}.{name.name}")
-
-# Installer les modules importés via pip
-for module in imports:
-    try:
-        subprocess.check_call(['pip3', 'install', module])
-    except subprocess.CalledProcessError:
-        print(f"Impossible d'installer le module {module}")
 
 print("Installation des dépendances terminée.")
