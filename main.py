@@ -6,6 +6,7 @@ def main(page: f.Page):
     EmptyTaskName = f.AlertDialog(
         title=f.Text("Entrez un nom pour la tâche")
     )
+
     def open_dlg(e):
         page.dialog = EmptyTaskName
         EmptyTaskName.open = True
@@ -19,10 +20,11 @@ def main(page: f.Page):
             new_task.value = ("")
             page.update()
 
-    # Champ de saisie nom de la tache
+    # Champ de saisi nom de la tache
     new_task = f.TextField(hint_text="Nouvelle tâche", expand=True)
-    # Champ de saisie nom de la personne
-    # Menu dropdown importance de la tache
+    # Champ de saisi nom de la personne
+
+    # Menu dropdown importance de la tâche
     # Menu dropdown etiquette
     # Menu selection de la date
 
