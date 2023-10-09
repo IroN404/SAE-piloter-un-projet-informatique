@@ -246,6 +246,7 @@ class SimpleUI(QMainWindow):
 def main():
     app = QApplication(sys.argv)
     window = SimpleUI()
+    window.showMaximized()
     window.show()
     sys.exit(app.exec())
 
