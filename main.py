@@ -14,14 +14,15 @@ def main(page: f.Page):
 
     # Bouton ajouter la tache
     def add_clicked(e):
-        if new_task.value == "" or person_name.value == "":
+        if new_task.value == "" or person_name.value == "" or priorite.value == "" :
             open_dlg(e)  # Ouvre la boîte de dialogue si le champ de tâche ou de nom de personne est vide
         else:
             # Ajoute une case à cocher avec le texte de la tâche et le nom de la personne
-            task_with_person = f.Checkbox(label=f"{new_task.value} - {person_name.value}")
+            task_with_person = f.Checkbox(label=f"{new_task.value} - {person_name.value} - {person_name.value}")
             page.add(task_with_person)
             new_task.value = ""  # Réinitialise le champ de tâche
             person_name.value = ""  # Réinitialise le champ de nom de personne
+            priorite.value = ""
             page.update()
 
     # Champ de saisie nom de la tache
@@ -32,7 +33,9 @@ def main(page: f.Page):
     person_name = f.TextField(hint_text="Nom de la personne")
     page.add(person_name)
 
-    # Menu dropdown importance de la tache (commentaire manquant)
+    # importance de la tache
+    priorite = f.TextField(hint_text="priorite de la tache")
+    page.add(priorite)
     # Menu dropdown etiquette (commentaire manquant)
     # Menu selection de la date (commentaire manquant)
 
