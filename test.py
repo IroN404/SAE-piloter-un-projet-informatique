@@ -1,38 +1,41 @@
 import sys
 from datetime import datetime
-from PyQt6.QtWidgets import (
-    QCheckBox, QComboBox, QDateTimeEdit, QLabel, QLineEdit,
-    QPushButton, QMainWindow, QApplication, QWidget, QGridLayout
-)
+from PyQt6.QtWidgets import *
 from PyQt6 import QtCore as Qt
-from PyQt6.QtGui import QPixmap
-from database import DatabaseManager
+from PyQt6.QtGui import QPixmap, QIcon, QPalette, QColor, QFont
+
 
 
 # Constantes pour les chemins des logos
 LOGO_PATHS = {
     "day": "logo_day.png",
-    "night": "logo_night.png",
+    "night": "logo_day.png",
 }
 
 STYLES = {
     "day": {
-        "canvas": "background-color: white; color: black;",
+        "canvas": "background-color: #FDFFDC; color: black;",
     },
     "night": {
-        "canvas": "background-color: #434343; color: white;",
+        "canvas": "background-color: #696969; color: white;",
     },
 }
+
+
 
 class SimpleUI(QMainWindow):
     def __init__(self):
         super().__init__()
+
+
         self.setWindowTitle("ToDoList")
         self.setGeometry(200, 300, 1500, 300)  # Définir la taille de la fenêtre
 
         # Créer un widget central
         central_widget = QWidget()
-        central_widget.setStyleSheet("background-color: white; color: black;")
+        central_widget.setStyleSheet("background-color: #FDFFDC;"
+                                           "color: black;")
+
         self.setCentralWidget(central_widget)
 
         self.layout = QGridLayout()
@@ -40,18 +43,19 @@ class SimpleUI(QMainWindow):
         self.current_row = 2  # Initialiser la ligne actuelle
 
         # Ajouter des widgets à la mise en page
-        plus = QPushButton("Ajouter une Tache")
+        plus = QPushButton("+")
         plus.clicked.connect(self.ajoutertache)
-        plus.setStyleSheet("border: 1px solid ;")
-        self.layout.addWidget(plus, 1, 0, alignment=Qt.Qt.AlignmentFlag.AlignCenter | Qt.Qt.AlignmentFlag.AlignTop)
+        self.layout.addWidget(plus, self.current_row, 3)  # Ligne actuelle, Colonne 3
 
         # Ajouter une image pour le logo clickable qui change en fonction du mode jour ou nuit
         pixmap = QPixmap('logo_day.png')
-        pixmap = pixmap.scaled(310, 150)
+        pixmap = pixmap.scaled(250, 150)
         self.logo = QLabel()
         self.logo.setPixmap(pixmap)
         self.logo.mousePressEvent = self.toggle_day_night
-        self.layout.addWidget(self.logo, 0, 0, 1, 1, alignment=Qt.Qt.AlignmentFlag.AlignLeft)
+        self.layout.addWidget(self.logo, 0, 0, 1, 7)
+
+
 
         # Définir la mise en page comme mise en page du widget central
         central_widget.setLayout(self.layout)
@@ -59,29 +63,34 @@ class SimpleUI(QMainWindow):
         # Initialisation du mode actuel (jour ou nuit)
         self.is_night_mode = False
 
+
+
     def toggle_day_night(self, event):
         # Inversion du mode actuel
         self.is_night_mode = not self.is_night_mode
 
         # Charger l'image du logo appropriée en fonction du mode jour ou nuit
         if self.is_night_mode:
-            logo_path = 'logo_night.png'
+            logo_path = 'logo_day.png'
             # Changer la couleur de fond du widget central en gris
             self.centralWidget().setStyleSheet(STYLES["night"]["canvas"])
+
         else:
             logo_path = 'logo_day.png'
             # Changer la couleur de fond du widget central en blanc
             self.centralWidget().setStyleSheet(STYLES["day"]["canvas"])
 
+
         pixmap = QPixmap(logo_path)
-        pixmap = pixmap.scaled(310, 150)
+        pixmap = pixmap.scaled(250, 150)
         self.logo.setPixmap(pixmap)
 
     def ajoutertache(self):
         # Incrémenter la ligne actuelle pour ajouter les widgets en dessous
         self.current_row += 2
 
-        # Créer des champs pour la saisie de la tâche
+        # Créer un QLineEdit pour la saisie initiale
+
         etiquette = QLineEdit()
         etiquette.setPlaceholderText("Ajouter une étiquette")
 
@@ -93,6 +102,7 @@ class SimpleUI(QMainWindow):
         statut.setPlaceholderText("Ajouter un statut")
         statut.addItem("En cours")
         statut.addItem("En attente")
+        self.statut = statut
 
         label_priorite = QLabel("Priorité : ")
         priorite = QComboBox()
@@ -100,6 +110,7 @@ class SimpleUI(QMainWindow):
         priorite.addItem("P1")
         priorite.addItem("P2")
         priorite.addItem("P3")
+        self.priorite = priorite
 
         label_personne = QLabel("Personne : ")
         personne = QLineEdit()
@@ -121,6 +132,7 @@ class SimpleUI(QMainWindow):
         tachefinie = QCheckBox()
 
         # Ajouter les labels et les champs dans un layout vertical
+
         self.layout.addWidget(etiquette, self.current_row, 0)
         self.layout.addWidget(tache, self.current_row + 1, 0)
         self.layout.addWidget(label_statut, self.current_row, 1)
@@ -136,63 +148,68 @@ class SimpleUI(QMainWindow):
         self.layout.addWidget(label_tachefinie, self.current_row, 6)
         self.layout.addWidget(tachefinie, self.current_row + 1, 6)
 
-        # Mettre tous les champs en forme de tableau pour qu'ils soient alignés sur CSS
+        # Mettre tous les champs en forme de tableau pour qu'ils soient alignés sur css
+
         etiquette.returnPressed.connect(self.pressenteretiquette)
         tache.returnPressed.connect(self.pressenter)
+        self.task_widgets.append(tache)
         priorite.activated[int].connect(self.on_combobox_activated3)
+        self.task_widgets.append(priorite)
         datedebut.dateTimeChanged.connect(self.pressenter)
+        self.task_widgets.append(datedebut)
         datebutoir.dateTimeChanged.connect(self.pressenter)
+        self.task_widgets.append(datebutoir)
         statut.activated[int].connect(self.on_combobox_activated)
+        self.task_widgets.append(statut)
         personne.returnPressed.connect(self.pressenter)
+        self.task_widgets.append(personne)
         tachefinie.stateChanged.connect(self.checkbox1)
+        self.task_widgets.append(tachefinie)
 
     def on_combobox_activated(self, index):
-        selected_item = self.sender().itemText(index)
+        # index est l'indice de l'élément sélectionné dans le QComboBox
+        selected_item = self.statut.itemText(index)
 
         if selected_item == "En cours":
+            # Faites quelque chose lorsque "En cours" est sélectionné
             label = QLabel("En cours")
-            label.setStyleSheet("border: 1px solid;background-color: blue;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
-            self.task_widgets.append(label)
+
         elif selected_item == "En attente":
+            # Faites quelque chose lorsque "En attente" est sélectionné
             label = QLabel("En attente")
-            label.setStyleSheet("border: 1px solid;background-color: green;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
-            self.task_widgets.append(label)
 
     def on_combobox_activated3(self, index):
-        selected_item = self.sender().itemText(index)
+        # index est l'indice de l'élément sélectionné dans le QComboBox
+        selected_item = self.priorite.itemText(index)
 
         if selected_item == "P1":
+            # Faites quelque chose lorsque "P1" est sélectionné
             label = QLabel("P1")
-            label.setStyleSheet("border: 1px solid;background-color: red;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
-            self.task_widgets.append(label)
+
         elif selected_item == "P2":
+            # Faites quelque chose lorsque "P2" est sélectionné
             label = QLabel("P2")
-            label.setStyleSheet("border: 1px solid;background-color: orange;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
-            self.task_widgets.append(label)
+
         elif selected_item == "P3":
+            # Faites quelque chose lorsque "P3" est sélectionné
             label = QLabel("P3")
-            label.setStyleSheet("border: 1px solid;background-color: yellow;")
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
-            self.task_widgets.append(label)
 
     def pressenter(self):
         if self.sender().text():
-            task_text = self.sender().text()  # Récupérez le texte de la tâche
-            print(f"Task text: {task_text}")  # Ajoutez cette ligne
-            label = QLabel(task_text)
+            label = QLabel(self.sender().text())
             self.layout.replaceWidget(self.sender(), label)
             self.sender().deleteLater()
             self.task_widgets.append(label)
-
 
     def pressenteretiquette(self):
         if self.sender().text():
@@ -202,43 +219,16 @@ class SimpleUI(QMainWindow):
             self.task_widgets.append(label)
 
     def checkbox1(self):
-        if self.sender().isChecked():
-            # Récupérez le texte de la tâche
-            task_text = self.layout.itemAtPosition(self.current_row - 2, 1).widget().text()
-
-            # Récupérez les autres données de l'interface utilisateur
-            label = self.layout.itemAtPosition(self.current_row - 2, 0).widget().text()
-            status = self.layout.itemAtPosition(self.current_row - 2, 1).widget().text()
-            priority = self.layout.itemAtPosition(self.current_row - 2, 2).widget().currentText()
-            person = self.layout.itemAtPosition(self.current_row - 2, 3).widget().text()
-            start_date = self.layout.itemAtPosition(self.current_row - 2, 4).widget().dateTime().toString("dd/MM/yyyy")
-            due_date = self.layout.itemAtPosition(self.current_row - 2, 5).widget().dateTime().toString("dd/MM/yyyy")
-            task_finished = True  # La tâche est terminée
-
-            # Enregistrez maintenant la tâche terminée dans la base de données
-            db_file = "tasks.db"  # Le chemin de votre base de données
-
-            # Créez la table s'il n'existe pas encore
-            with DatabaseManager(db_file) as db:
-                db.create_table()
-
-            # Enregistrez maintenant la tâche terminée dans la base de données
-            with DatabaseManager(db_file) as db:
-                db.insert_task(label, task_text, status, priority, person, start_date, due_date, task_finished)
-
-                # Récupérez toutes les tâches de la base de données et imprimez-les
-                tasks = db.fetch_all_tasks()
-                print("Tasks:")
-                for task in tasks:
-                    print(task)
-
+        labledatedefin = QLabel(datetime.now().strftime("%d-%m-%Y %H:%M"))
+        self.layout.replaceWidget(self.sender(), labledatedefin)
+        self.sender().deleteLater()
+        self.task_widgets.append(labledatedefin)
 
 def main():
-        app = QApplication(sys.argv)
-        window = SimpleUI()
-        window.show()
-        window.showMaximized()
-        sys.exit(app.exec())
+    app = QApplication(sys.argv)
+    window = SimpleUI()
+    window.show()
+    sys.exit(app.exec())
 
 if __name__ == "__main__":
     main()
