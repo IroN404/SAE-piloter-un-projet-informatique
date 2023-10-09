@@ -20,19 +20,33 @@ def main(page: f.Page):
             page.update()
 
     # Champ de saisie nom de la tache
-    new_task = f.TextField(hint_text="Nouvelle tâche")
-    page.add(new_task, f.FloatingActionButton(icon=f.icons.ADD, on_click=add_clicked))
-    task_view=
+    new_task = f.TextField(hint_text="Nouvelle tâche", expand=True)
     # Champ de saisie nom de la personne
     # Menu dropdown importance de la tache
     # Menu dropdown etiquette
     # Menu selection de la date
 
     ## Page Liste des taches
+    tasks_view = f.Column()
     # Tache
     # Coche tache effectuée
 
     ## Page principale
     # ALL
+    view = f.Column(
+        width=600,
+        controls=[
+            f.Row(
+                controls=[
+                    new_task,
+                    f.FloatingActionButton(icon=f.icons.ADD, on_click=add_clicked),
+                ],
+            ),
+            tasks_view,
+        ],
+    )
+    page.horizontal_alignment = f.CrossAxisAlignment.CENTER
+    page.add(view)
+
 f.app(target=main)
 
