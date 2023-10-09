@@ -1,5 +1,6 @@
 import flet as f
 
+
 def main(page: f.Page):
     # Alert Dialog
     EmptyTaskName = f.AlertDialog(
@@ -14,15 +15,25 @@ def main(page: f.Page):
 
     # Bouton ajouter la tache
     def add_clicked(e):
-        if new_task.value == "" or person_name.value == "" or priorite.value == "" :
-            open_dlg(e)  # Ouvre la boîte de dialogue si le champ de tâche ou de nom de personne est vide
+        if new_task.value == "" or person_name.value == "" or priorite.value == "":
+            open_dlg(e)  # Ouvre la boîte de dialogue si l'un des champs est vide
         else:
-            # Ajoute une case à cocher avec le texte de la tâche et le nom de la personne
-            task_with_person = f.Checkbox(label=f"{new_task.value} - {person_name.value} - {person_name.value}")
-            page.add(task_with_person)
+            # Récupérez la priorité saisie par l'utilisateur
+            user_priority = priorite.value.strip().upper()
+
+            # Liste des priorités autorisées
+            allowed_priorities = ["P1", "P2", "P3", "P4"]
+
+            # Vérifiez si la priorité saisie par l'utilisateur est valide
+            if user_priority not in allowed_priorities:
+                user_priority = ""  # Réinitialise la priorité si elle n'est pas valide
+
+            # Ajoute une case à cocher avec le texte de la tâche et la priorité
+            task_with_info = f.Checkbox(label=f"{new_task.value} - {person_name.value} - Priorité : {user_priority}")
+            page.add(task_with_info)
             new_task.value = ""  # Réinitialise le champ de tâche
             person_name.value = ""  # Réinitialise le champ de nom de personne
-            priorite.value = ""
+            priorite.value = ""  # Réinitialise le champ de priorité
             page.update()
 
     # Champ de saisie nom de la tache
@@ -33,16 +44,14 @@ def main(page: f.Page):
     person_name = f.TextField(hint_text="Nom de la personne")
     page.add(person_name)
 
-    # importance de la tache
-    priorite = f.TextField(hint_text="priorite de la tache")
+    # Champ de saisie priorité de la tache
+    priorite = f.TextField(hint_text="Priorité de la tache")
     page.add(priorite)
-    # Menu dropdown etiquette (commentaire manquant)
-    # Menu selection de la date (commentaire manquant)
 
-    ## Page Liste des taches
+    # Texte explicatif pour les priorités acceptées
+    priority_info = f.Text("Priorités acceptées : P1, P2, P3, P4")
+    page.add(priority_info)
 
-    # Tache (commentaire manquant)
-    # Coche tache effectuée (commentaire manquant)
 
 # Appelle la fonction main lors de l'exécution de l'application
 f.app(target=main)
