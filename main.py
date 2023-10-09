@@ -1,6 +1,6 @@
 import sys
 from datetime import datetime
-from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateTimeEdit, QLabel, QLineEdit, QPushButton, QMainWindow, QApplication, QWidget, QGridLayout, QVBoxLayout, QScrollArea
+from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateTimeEdit, QLabel, QLineEdit, QPushButton, QMainWindow, QApplication, QWidget, QGridLayout, QScrollArea
 from PyQt6 import QtCore as Qt
 from PyQt6.QtGui import QPixmap
 
