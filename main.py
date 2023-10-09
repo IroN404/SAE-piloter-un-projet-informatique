@@ -26,7 +26,12 @@ def main(page: f.Page):
     new_task = f.TextField(hint_text="Nouvelle tâche")
     page.add(new_task, f.FloatingActionButton(icon=f.icons.ADD, on_click=add_clicked))
 
+
+
     # Champ de saisie nom de la personne (commentaire manquant)
+    person_name = f.TextField(hint_text="Nom de la personne")
+    page.add(person_name)
+
     # Menu dropdown importance de la tache (commentaire manquant)
     # Menu dropdown etiquette (commentaire manquant)
     # Menu selection de la date (commentaire manquant)
