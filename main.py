@@ -32,6 +32,5 @@ def main(page: f.Page):
     # Coche tache effectuée
 
     ## Page principale
-    # ALL
+    # bahir
 f.app(target=main)
-
