@@ -17,4 +17,3 @@ def main(page: f.Page):
     page.add(f.InputBorder(value="Enter a Name"))
 f.app(target=main)
 
-# bahir
