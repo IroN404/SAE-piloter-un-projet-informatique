@@ -71,12 +71,12 @@ class SimpleUI(QMainWindow):
 
         # Charger l'image du logo appropriée en fonction du mode jour ou nuit
         if self.is_night_mode:
-            logo_path = 'logo_day.png'
+            logo_path = 'media/logo_day.png'
             # Changer la couleur de fond du widget central en gris
             self.centralWidget().setStyleSheet(STYLES["night"]["canvas"])
 
         else:
-            logo_path = 'logo_day.png'
+            logo_path = 'media/logo_day.png'
             # Changer la couleur de fond du widget central en blanc
             self.centralWidget().setStyleSheet(STYLES["day"]["canvas"])
 
