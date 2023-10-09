@@ -44,12 +44,5 @@ Pour pouvoir utilise la To do List, il vous suffit de lancer main.py.
 Les contributions, les problèmes et les demandes de fonctionnalités sont les bienvenus !<br />
 N'hésitez pas à vérifier [Page](https://github.com/IroN404/SAE-piloter-un-projet-informatique). 
 
-## Montrez votre soutien
-
-Donnez une ⭐️ si ce projet vous a aidé !
-
-<a href="https://github.com/Yassem68">
-  <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
-</a>
 
 ***
