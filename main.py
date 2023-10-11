@@ -11,36 +11,37 @@ def main(page: f.Page):
         page.dialog = EmptyTaskName
         EmptyTaskName.open = True
         page.update()
-    # Bouton ajouter la tache
+
+    # Bouton ajouter la tâche
     def add_clicked(e):
-        if new_task.value==(""):
+        if new_task.value == "" or personne.value == "":
             open_dlg(e)
         else:
-            page.add(f.Checkbox(label=new_task.value))
-            new_task.value = ("")
+            task_text = f.Row([f.Checkbox(label=new_task.value), f.Text(personne.value)])
+            tasks_view.add(task_text)
+            new_task.value = ""
+            personne.value = ""
             page.update()
 
-    # Champ de saisi nom de la tache
+    # Champ de saisie du nom de la tâche
     new_task = f.TextField(hint_text="Nouvelle tâche", expand=True)
-    # Champ de saisi nom de la personne
 
-    # Menu dropdown importance de la tâche
-    # Menu dropdown etiquette
-    # Menu selection de la date
+    # Champ de saisie du nom de la personne
+    personne = f.TextField(hint_text="Nom de la personne", expand=True)
 
-    ## Page Liste des taches
+
+
+    ## Page Liste des tâches
     tasks_view = f.Column()
-    # Tache
-    # Coche tache effectuée
 
     ## Page principale
-    # ALLs
     view = f.Column(
         width=600,
         controls=[
             f.Row(
                 controls=[
                     new_task,
+                    personne,
                     f.FloatingActionButton(icon=f.icons.ADD, on_click=add_clicked),
                 ],
             ),
@@ -51,4 +52,3 @@ def main(page: f.Page):
     page.add(view)
 
 f.app(target=main)
-
