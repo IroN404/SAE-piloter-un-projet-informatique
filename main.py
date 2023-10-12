@@ -31,7 +31,7 @@ def main(page: f.Page):
 
     page.add(
         AppBar(
-            title=f.Text("Projet Blue List", size=25, ),
+            title=f.Text("Projet Blue List", size=25,color="#103A9B"),
             bgcolor="darkgrey",
             actions=[
                 toggledarklight
