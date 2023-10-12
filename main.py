@@ -13,8 +13,9 @@ def main(page: f.Page):
         toolbar_height=70,
         center_title=True,
         bgcolor=f.colors.SURFACE_VARIANT,
-        actions=[f.IconButton(f.icons.WB_SUNNY_OUTLINED)],
     )
+
+
 
     # Dialogue d'alerte pour tâche vide
     EmptyTaskName = f.AlertDialog(title=f.Text("Entrez un nom pour la tâche"))
