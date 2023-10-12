@@ -1,10 +1,11 @@
 import flet as f
 
+
 def main(page: f.Page):
     ## Page Champs de saisie
     # Alert Dialog
     EmptyTaskName = f.AlertDialog(
-        title=f.Text("Entrez un nom pour la tâche")
+        title=f.Text("Veuillez saisir tous les champs")
     )
 
     def open_dlg(e):
@@ -14,11 +15,10 @@ def main(page: f.Page):
 
     # Bouton ajouter la tâche
     def add_clicked(e):
-        if new_task.value == "" or personne.value == "":
+        if new_task.value == "":
             open_dlg(e)
         else:
-            task_text = f.Row([f.Checkbox(label=new_task.value), f.Text(personne.value)])
-            tasks_view.add(task_text)
+            page.add(f.Checkbox(label=new_task.value + " / " + personne.value + " / " + prio.value + " / " + date.value))
             new_task.value = ""
             personne.value = ""
             page.update()
@@ -29,19 +29,27 @@ def main(page: f.Page):
     # Champ de saisie du nom de la personne
     personne = f.TextField(hint_text="Nom de la personne", expand=True)
 
+    # Champ de saisi de la priorité
+    prio = f.TextField(hint_text="Priorité", expand=True)
+    choix = ["P1", "P2", "P3"]
 
+
+    # Champ de saisie de la date
+    date = f.TextField(hint_text="Date", expand=True)
 
     ## Page Liste des tâches
     tasks_view = f.Column()
 
     ## Page principale
     view = f.Column(
-        width=600,
+        width=800,
         controls=[
             f.Row(
                 controls=[
                     new_task,
                     personne,
+                    prio,
+                    date,
                     f.FloatingActionButton(icon=f.icons.ADD, on_click=add_clicked),
                 ],
             ),
@@ -50,5 +58,8 @@ def main(page: f.Page):
     )
     page.horizontal_alignment = f.CrossAxisAlignment.CENTER
     page.add(view)
+
+
+
 
 f.app(target=main)
