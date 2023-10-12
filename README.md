@@ -61,13 +61,23 @@ If you want to run this Python tkinter application using Docker, follow the step
 ```bash
        cd repository
    ```
-4. Build a Docker image based on the DockerFile present in the repository :
+4. Make the run.sh script executable :
 ```bash
-    docker build -t your-image-name .
+    sudo chmod +x run.sh
 ```
-5. When the docker is built, you can start the container with the command :
+5. Run the script, it will automatically do everything needed :
 ```
-    docker run -it your-image-name
+    ./run.sh
+```
+***
+Otherwise, you can actually do all of this by yourself following theses steps : 
+1. Build the container :
+```
+    docker build -t todo_docker
+```
+2. Run the container :
+```
+    docker run -u=$(id -u $USER):$(id -g $USER) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd)/app:/app --rm todo_docker
 ```
 
 ## Usage
