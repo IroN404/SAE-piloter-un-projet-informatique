@@ -1,6 +1,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<h1 align="center">Welcome to SAE-piloter-un-projet-informatique 👋</h1>
+<h1 align = "center">
+    <br>
+    <img src="media/logo_night.png" alt="Sans-titre-3" border="0" width="300">
+    <br>
+    SAE-3.02-Piloter un projet informatique
+    <br>
+</h1>
 
 <p>
     <img alt="Version" src="https://img.shields.io/badge/version-V1.0-blue.svg?cacheSeconds=2592000" />
