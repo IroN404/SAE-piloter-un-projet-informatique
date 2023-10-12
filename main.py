@@ -1,8 +1,52 @@
 import flet as f
+from flet import *
 
 def main(page: f.Page):
     ## Page Champs de saisie
     # Alert Dialog
+    page.theme_mode = "light"
+    page.splash = ProgressBar(visible=False)
+
+    def changetheme(e):
+        page.splash.visible = True
+        page.theme_mode = "light" if page.theme_mode == "dark" else "dark"
+        page.update()
+
+
+        toggledarklight.selected = not toggledarklight.selected
+
+        page.splash.visible = False
+
+        page.update()
+
+    toggledarklight = f.IconButton(
+        on_click=changetheme,
+        icon="dark_mode",
+        selected_icon="light_mode",
+        style=f.ButtonStyle(
+            color={"": f.colors.BLACK, "selected": f.colors.WHITE}
+        )
+    )
+
+
+    page.add(
+        AppBar(
+            title=f.Text("Hello", size=30),
+            bgcolor="darkgrey",
+            leading=f.IconButton(icon="menu"),
+            actions=[
+                toggledarklight
+
+            ]
+        ),
+
+        Column([
+            Text("Projet Blue List ", size=30)
+
+        ])
+    )
+
+
     EmptyTaskName = f.AlertDialog(
         title=f.Text("Entrez un nom pour la tâche")
     )
