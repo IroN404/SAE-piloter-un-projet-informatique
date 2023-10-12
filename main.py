@@ -9,7 +9,7 @@ def main(page: f.Page):
     title_img_url = "https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true"
     page.appbar = f.AppBar(
         leading_width=200,
-        title=f.Image(title_img_url, height=95),
+        title=f.Image(title_img_url, height=75),
         toolbar_height=70,
         center_title=True,
         bgcolor=f.colors.SURFACE_VARIANT,
