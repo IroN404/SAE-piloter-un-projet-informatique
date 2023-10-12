@@ -1,5 +1,6 @@
 import flet as f
 
+
 def main(page: f.Page):
 
     page.theme_mode = "light"
@@ -13,11 +14,11 @@ def main(page: f.Page):
         if page.theme_mode == "light":
             page.appbar.title = f.Image(
                 "https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true",
-                height=95)
+                height=75)
         else:
             page.appbar.title = f.Image(
                 "https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_night.png?raw=true",
-                height=95)
+                height=75)
 
         page.update()
 
@@ -32,13 +33,9 @@ def main(page: f.Page):
 
 
     # Configuration de l'AppBar avec le bouton inclus
-    title_img_url = "https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true"
     page.appbar = f.AppBar(
-        leading_width=200,
-        title=f.Image(title_img_url, height=95),
-        toolbar_height=70,
+        title=f.Image("https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true", height=75),
         center_title=True,
-        bgcolor="darkgrey",
         actions=[
             toggledarklight
         ]

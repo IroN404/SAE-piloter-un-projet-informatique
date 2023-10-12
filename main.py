@@ -1,26 +1,49 @@
 import flet as f
 
-def main(page: f.Page):
-    # Configuration de l'image
-    img_path = "/Users/gregory/PycharmProjects/SAE-piloter-un-projet-informatique/media/logo_night.png"
-    img = f.Image(src=img_path, height=200, width=200, fit=f.ImageFit.CONTAIN)
 
-    # Configuration de la barre d'application
-    title_img_url = "https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true"
-    page.appbar = f.AppBar(
-        leading_width=200,
-        title=f.Image(title_img_url, height=75),
-        toolbar_height=70,
-        center_title=True,
-        bgcolor=f.colors.SURFACE_VARIANT,
+def main(page: f.Page):
+
+    page.theme_mode = "light"
+
+    def changetheme(e):
+        page.theme_mode = "light" if page.theme_mode == "dark" else "dark"
+        page.update()
+
+        toggledarklight.selected = not toggledarklight.selected
+
+        if page.theme_mode == "light":
+            page.appbar.title = f.Image(
+                "https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true",
+                height=75)
+        else:
+            page.appbar.title = f.Image(
+                "https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_night.png?raw=true",
+                height=75)
+
+        page.update()
+
+    toggledarklight = f.IconButton(
+        on_click=changetheme,
+        icon="dark_mode",
+        selected_icon="light_mode",
+        style=f.ButtonStyle(
+            color={"": f.colors.BLACK, "selected": f.colors.WHITE}
+        )
     )
 
 
+    # Configuration de l'AppBar avec le bouton inclus
+    page.appbar = f.AppBar(
+        title=f.Image("https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true", height=75),
+        center_title=True,
+        actions=[
+            toggledarklight
+        ]
+    )
 
-    # Dialogue d'alerte pour tâche vide
+
     EmptyTaskName = f.AlertDialog(title=f.Text("Entrez un nom pour la tâche"))
 
-    # Gestionnaire d'événements
     def open_dlg(e):
         page.dialog = EmptyTaskName
         EmptyTaskName.open = True
@@ -35,7 +58,6 @@ def main(page: f.Page):
             new_task.value = ""
             page.update()
 
-    # Configuration des champs de saisie
     new_task = f.TextField(hint_text="Nouvelle tâche", label='Nom de la tâche', expand=True)
     person = f.TextField(hint_text="Nom de la personne", label='Nom', expand=True)
 
@@ -54,10 +76,8 @@ def main(page: f.Page):
     ]
     tags_selector = f.Dropdown(width=200, label="Etiquette", hint_text="Choisissez une étiquette", options=tag_options)
 
-    # Configuration de l'affichage des tâches
     tasks_view = f.Column()
 
-    # Vue principale
     main_view = f.Column(
         width=600,
         controls=[
