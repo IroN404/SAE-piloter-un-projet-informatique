@@ -34,6 +34,7 @@ def main(page: f.Page):
 
     # Configuration de l'AppBar avec le bouton inclus
     page.appbar = f.AppBar(
+        toolbar_height=0,
         title=f.Image("https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true", height=75),
         center_title=True,
         actions=[

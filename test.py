@@ -33,8 +33,10 @@ def main(page: f.Page):
 
 
     # Configuration de l'AppBar avec le bouton inclus
+    title_img_url = "https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true"
     page.appbar = f.AppBar(
-        title=f.Image("https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true", height=75),
+        title=f.Image(title_img_url, height=75),
+        toolbar_height=65,
         center_title=True,
         actions=[
             toggledarklight
