@@ -1,6 +1,8 @@
 import flet as f
 import flet as ft
 import sqlite3
+import os
+import sys
 
 
 conn = sqlite3.connect('bddtasks.db', check_same_thread=False)
@@ -18,6 +20,8 @@ list = []
 
 
 def main(page: f.Page):
+
+
     img = f.Image(
         src=f"/Users/gregory/PycharmProjects/SAE-piloter-un-projet-informatique/media/logo_night.png",
         height=200,
@@ -56,7 +60,14 @@ def main(page: f.Page):
         if new_task.value==(""):
             open_dlg(e)
         else:
-            page.add(f.Checkbox(label=f'{new_task.value}  {priority_selector.value}  {tags_selector.value}' ))
+            task = f.Checkbox(label=f'{new_task.value}  {priority_selector.value}  {tags_selector.value}' )
+            displaytask = f.Row(
+                controls=[
+                    task,
+                    f.IconButton(icon=f.icons.DELETE, on_click=lambda e: delete_task(task)),
+                ],
+            )
+
             c.execute("INSERT INTO tasks VALUES (:task, :person, :priority, :tag)",
                         {
                             'task': new_task.value,
@@ -66,6 +77,7 @@ def main(page: f.Page):
                         })
             conn.commit()
             new_task.value = ("")
+            page.add(displaytask)
             page.update()
             # rafraichir l'app
             page.update()
@@ -75,14 +87,21 @@ def main(page: f.Page):
         records = c.fetchall()
         for record in records:
             print(record)
-            page.add(f.Checkbox(label=f'{record[0]}  {record[2]}  {record[3]}'))
+            task2 = f.Checkbox(label=f'{record[0]}  {record[2]}  {record[3]}')
+            displaytask2 = f.Row(
+                controls=[
+                    task2,
+                    f.IconButton(icon=f.icons.DELETE, on_click=lambda e: delete_task(task2)),
+                ],
+            )
+            page.add(displaytask2)
             page.update()
 
 
 
     # Champ de saisie nom de la tache
     new_task = f.TextField(hint_text="Nouvelle tâche",label='nom de la tache', expand=True)
-    # Champ de saisie nom de la personne
+    # Champ de saisi nom de la personne
     person = f.TextField(hint_text="Nom de la personne",label='nom', expand=True)
     # Menu dropdown importance de la tache
     priority_selector = f.Dropdown(
@@ -114,11 +133,26 @@ def main(page: f.Page):
     ## Page Liste des taches
     tasks_view = f.Column()
     # Tache
-
+    def restart_script():
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
     # Checkbox delete task
-    def delete_task(e):
-        page.remove(e.target)
-        page.update()
+    def delete_task(task):
+        taskref = task.label.split("  ")
+        print(taskref[0])
+        c.execute("DELETE from tasks WHERE task = :task",
+                  {
+                      'task': taskref[0]
+                  })
+        conn.commit()
+        if task in page.controls:
+            page.remove(task)
+        restart_script()
+
+
+
+
+
 
 
     # Checkbox tache effectuée
