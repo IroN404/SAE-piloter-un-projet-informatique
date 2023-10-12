@@ -1,5 +1,20 @@
 import flet as f
 import flet as ft
+import sqlite3
+
+
+conn = sqlite3.connect('bddtasks.db', check_same_thread=False)
+c = conn.cursor()
+
+c.execute("""CREATE TABLE IF NOT EXISTS tasks (
+            task text,
+            person text,
+            priority text,
+            tag text
+            )""")
+conn.commit()
+
+list = []
 
 
 def main(page: f.Page):
@@ -32,9 +47,9 @@ def main(page: f.Page):
     def open_dlg(e):
         page.dialog = EmptyTaskName
         EmptyTaskName.open = True
+
         page.update()
-    # Bouton ajouter la tache
-    list = [ 'tache']
+
 
 
     def add_clicked(e):
@@ -42,10 +57,25 @@ def main(page: f.Page):
             open_dlg(e)
         else:
             page.add(f.Checkbox(label=f'{new_task.value}  {priority_selector.value}  {tags_selector.value}' ))
-            list.append(f'{new_task.value}')
+            c.execute("INSERT INTO tasks VALUES (:task, :person, :priority, :tag)",
+                        {
+                            'task': new_task.value,
+                            'person': person.value,
+                            'priority': priority_selector.value,
+                            'tag': tags_selector.value
+                        })
+            conn.commit()
             new_task.value = ("")
             page.update()
             # rafraichir l'app
+            page.update()
+
+    def afficher_taches():
+        c.execute("SELECT * FROM tasks")
+        records = c.fetchall()
+        for record in records:
+            print(record)
+            page.add(f.Checkbox(label=f'{record[0]}  {record[2]}  {record[3]}'))
             page.update()
 
 
@@ -77,6 +107,7 @@ def main(page: f.Page):
             f.dropdown.Option("Autre"),
         ],
     )
+
     # Menu selection de la date
 
 
@@ -86,8 +117,9 @@ def main(page: f.Page):
 
     # Checkbox delete task
     def delete_task(e):
-        tasks_view.controls.remove(e)
+        page.remove(e.target)
         page.update()
+
 
     # Checkbox tache effectuée
 
@@ -122,6 +154,8 @@ def main(page: f.Page):
     )
     page.horizontal_alignment = f.CrossAxisAlignment.CENTER
     page.add(view)
+    afficher_taches()
 
 f.app(target=main)
+
 
