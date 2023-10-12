@@ -34,12 +34,18 @@ def main(page: f.Page):
         EmptyTaskName.open = True
         page.update()
     # Bouton ajouter la tache
+    list = [ 'tache']
+
+
     def add_clicked(e):
         if new_task.value==(""):
             open_dlg(e)
         else:
-            page.add(f.Checkbox(label=f'{new_task.value}  {priority_selector.value}  {tags_selector.value}'))
+            page.add(f.Checkbox(label=f'{new_task.value}  {priority_selector.value}  {tags_selector.value}' ))
+            list.append(f'{new_task.value}')
             new_task.value = ("")
+            page.update()
+            # rafraichir l'app
             page.update()
 
 
@@ -77,6 +83,16 @@ def main(page: f.Page):
     ## Page Liste des taches
     tasks_view = f.Column()
     # Tache
+
+    # Checkbox delete task
+    def delete_task(e):
+        tasks_view.controls.remove(e)
+        page.update()
+
+    # Checkbox tache effectuée
+
+
+
     # Coche tache effectuée
 
     ## Page principale
@@ -90,6 +106,7 @@ def main(page: f.Page):
             f.Row(
                 controls=[
                     new_task,
+
                 ],
             ),
             f.Row(
