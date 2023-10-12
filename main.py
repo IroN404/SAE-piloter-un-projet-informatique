@@ -31,9 +31,8 @@ def main(page: f.Page):
 
     page.add(
         AppBar(
-            title=f.Text("Hello", size=30),
+            title=f.Text("Projet Blue List", size=25, ),
             bgcolor="darkgrey",
-            leading=f.IconButton(icon="menu"),
             actions=[
                 toggledarklight
 
@@ -41,7 +40,7 @@ def main(page: f.Page):
         ),
 
         Column([
-            Text("Projet Blue List ", size=30)
+            Text("To Do List ", size=30)
 
         ])
     )
