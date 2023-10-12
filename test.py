@@ -1,6 +1,9 @@
 import flet as f
 
 def main(page: f.Page):
+
+    page.theme_mode = "light"
+
     def changetheme(e):
         page.theme_mode = "light" if page.theme_mode == "dark" else "dark"
         page.update()
