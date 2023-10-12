@@ -7,6 +7,14 @@ def main(page: f.Page):
 
         toggledarklight.selected = not toggledarklight.selected
 
+        if page.theme_mode == "light":
+            page.appbar.title = f.Image(
+                "https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_day.png?raw=true",
+                height=95)
+        else:
+            page.appbar.title = f.Image(
+                "https://github.com/IroN404/SAE-piloter-un-projet-informatique/blob/main/media/logo_night.png?raw=true",
+                height=95)
 
         page.update()
 
