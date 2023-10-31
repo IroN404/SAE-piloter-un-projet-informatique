@@ -21,7 +21,7 @@
     <img alt="Version" src="https://img.shields.io/badge/version-V1.0-blue.svg?cacheSeconds=2592000" />
     <img alt="PyCharm - Python 3.10" src="https://img.shields.io/badge/PyCharm-Python%203.10-brightgreen.svg"/>
     <img alt="logo Python" src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png" width="15" />
-    ![Qt](https://img.shields.io/badge/Qt-%23217346.svg?style=for-the-badge&logo=Qt&logoColor=white)
+    <img alt="QT logo" src="https://img.shields.io/badge/Qt-%23217346.svg?style=for-the-badge&logo=Qt&logoColor=white" />
 
 </p>
 
