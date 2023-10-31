@@ -10,7 +10,7 @@ services:
 
   python_app:
     build:
-      context: ../../Library/Application Support/JetBrains/PyCharm2023.2/scratches
+      context: ../../../Library/Application Support/JetBrains/PyCharm2023.2/scratches
       dockerfile: Dockerfile
     command: ["python3", "/app.py"]
     volumes:
