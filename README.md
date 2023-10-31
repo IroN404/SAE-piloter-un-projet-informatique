@@ -18,8 +18,8 @@
 </p>
 
 <h1 align = "center">
-    <img alt="Version" src="https://img.shields.io/badge/git-%23F05033.svg" />
-    <img alt="PyCharm - Python 3.10" src="https://img.shields.io/badge/PyCharm-Python%203.10-brightgreen.svg"/>
+    <img alt="Version" src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white" />
+    <img alt="PyCharm" src="https://img.shields.io/badge/pycharm-143?style=for-the-badge&logo=pycharm&logoColor=black&color=black&labelColor=green"/>
     <img alt="logo Python" src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"/>
     <img alt="QT logo" src="https://img.shields.io/badge/Qt-%23217346.svg?style=for-the-badge&logo=Qt&logoColor=white"/>
 
