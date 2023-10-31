@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 import sys
 
-#from assets.login import LoginWidget
+from assets.login import LoginWidget
 #from assets.landing import LandingWidget
 #from assets.signup import SignupWidget
 
@@ -18,17 +18,17 @@ def StackeWidget(main_window):
     main_window.setCentralWidget(stacked_widget)
 
     # Listing all pages of the app
-    #login_page = LoginWidget(stacked_widget)
+    login_page = LoginWidget(stacked_widget)
     #landing_page = LandingWidget(stacked_widget)
     #signup_page = SignupWidget(stacked_widget)
 
     # Adding pages to the QStackedWidget
-    #stacked_widget.addWidget(login_page)
+    stacked_widget.addWidget(login_page)
     #stacked_widget.addWidget(landing_page)
     #stacked_widget.addWidget(signup_page)
 
     # Displaying the login page
-    #stacked_widget.setCurrentWidget(login_page)
+    stacked_widget.setCurrentWidget(login_page)
 
 def main():
     app = QApplication([])
