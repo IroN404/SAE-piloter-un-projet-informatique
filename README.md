@@ -8,7 +8,7 @@
     <br>
 </h1>
 
-<h4 align="center">A To-Do app made with Python and based on the Flet framework.</h4>
+<h4 align="center">A To-Do app made with Python and based on the Qt framework.</h4>
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -21,6 +21,7 @@
     <img alt="Version" src="https://img.shields.io/badge/version-V1.0-blue.svg?cacheSeconds=2592000" />
     <img alt="PyCharm - Python 3.10" src="https://img.shields.io/badge/PyCharm-Python%203.10-brightgreen.svg"/>
     <img alt="logo Python" src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png" width="15" />
+    ![Qt](https://img.shields.io/badge/Qt-%23217346.svg?style=for-the-badge&logo=Qt&logoColor=white)
 
 </p>
 
