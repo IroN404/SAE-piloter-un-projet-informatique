@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< Updated upstream
+=======
+  <component name="Black">
+    <option name="sdkName" value="SAE-piloter-un-projet-informatique" />
+  </component>
+>>>>>>> Stashed changes
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (SAE-piloter-un-projet-informatique)" project-jdk-type="Python SDK" />
 </project>

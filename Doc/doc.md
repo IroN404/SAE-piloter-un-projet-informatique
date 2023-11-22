@@ -1,11 +1,11 @@
 # Documentation d'utilisation du code ToDoList
 
-Ce code est une application de liste de tâches simple créée avec PyQt6, une bibliothèque Python pour le développement d'interfaces graphiques. L'application permet à l'utilisateur d'ajouter des tâches à une liste, en spécifiant diverses informations telles que l'étiquette, la tâche elle-même, le statut, la priorité, la personne responsable, la date de début et la date butoir. De plus, il y a une option pour marquer les tâches comme terminées. L'interface utilisateur de l'application offre également un mode jour/nuit, où le fond de l'application et le logo changent de couleur en fonction du mode sélectionné.
+Ce code est une application de liste de tâches simple créée avec PyQt5, une bibliothèque Python pour le développement d'interfaces graphiques. L'application permet à l'utilisateur d'ajouter des tâches à une liste, en spécifiant diverses informations telles que l'étiquette, la tâche elle-même, le statut, la priorité, la personne responsable, la date de début et la date butoir. De plus, il y a une option pour marquer les tâches comme terminées. L'interface utilisateur de l'application offre également un mode jour/nuit, où le fond de l'application et le logo changent de couleur en fonction du mode sélectionné.
 
 ## Utilisation de l'application
 
 1. **Lancement de l'application**:
-   - L'application est lancée en exécutant le script Python. Assurez-vous d'avoir PyQt6 installé.
+   - L'application est lancée en exécutant le script Python. Assurez-vous d'avoir PyQt5 installé.
 
 2. **Interface principale**:
    - Une fenêtre principale s'ouvre avec un logo en haut à gauche et un bouton "Ajouter une Tache" en haut à droite.
