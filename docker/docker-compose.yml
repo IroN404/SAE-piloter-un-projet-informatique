@@ -1,0 +1,17 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: todo_app
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  python_app:
+    build:
+      context: ../../../Library/Application Support/JetBrains/PyCharm2023.2/scratches
+      dockerfile: Dockerfile
+    command: ["python3", "/app.py"]
+    volumes:
+      - ./app.py:/app.py
