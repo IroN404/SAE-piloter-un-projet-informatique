@@ -1,45 +1,132 @@
-from PyQt5.QtWidgets import *
+# coding:utf-8
 import sys
 
-from assets.login import LoginWidget
-#from assets.landing import LandingWidget
-#from assets.signup import SignupWidget
+from PyQt5.QtCore import Qt, QUrl
+from pathlib import Path
+from PyQt5.QtGui import QIcon, QDesktopServices
+from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QVBoxLayout
+from qfluentwidgets import (CardWidget,NavigationItemPosition, MessageBox, setTheme, Theme, FluentWindow,ImageLabel, CaptionLabel, ElevatedCardWidget,
+                            NavigationAvatarWidget, qrouter, SubtitleLabel, setFont, InfoBadge,IconWidget, PushButton, TransparentToolButton,
+                            BodyLabel, InfoBadgePosition,FluentIcon)
+from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets.components.widgets.acrylic_label import AcrylicBrush
 
-def initUI(main_window):
-    # Main window properties
-    main_window.setWindowTitle("GUI-todo-app") # titre de la fenetre
-    main_window.setContentsMargins(0, 0, 0, 0) # remove margins
-    main_window.setFixedSize(800, 600) # window's size
-    main_window.setStyleSheet("style/main_window.css") # window's style
 
-def StackeWidget(main_window):
-    # QstackedWidget creation
-    stacked_widget = QStackedWidget()
-    main_window.setCentralWidget(stacked_widget)
 
-    # Listing all pages of the app
-    login_page = LoginWidget(stacked_widget)
-    #landing_page = LandingWidget(stacked_widget)
-    #signup_page = SignupWidget(stacked_widget)
+class Widget(QFrame):
 
-    # Adding pages to the QStackedWidget
-    stacked_widget.addWidget(login_page)
-    #stacked_widget.addWidget(landing_page)
-    #stacked_widget.addWidget(signup_page)
+    def __init__(self, text: str, parent=None):
+        super().__init__(parent=parent)
+        self.label = SubtitleLabel(text, self)
+        self.hBoxLayout = QHBoxLayout(self)
 
-    # Displaying the login page
-    stacked_widget.setCurrentWidget(login_page)
+        setFont(self.label, 24)
+        self.label.setAlignment(Qt.AlignCenter)
+        self.hBoxLayout.addWidget(self.label, 1, Qt.AlignCenter)
+        self.setObjectName(text.replace(' ', '-'))
 
-def main():
-    app = QApplication([])
 
-    main_window = QMainWindow()
-    initUI(main_window)
-    StackeWidget(main_window)
 
-    # Starting the app
-    main_window.show()
-    sys.exit(app.exec_())
 
-if __name__ == "__main__":
-    main()
+class Window(FluentWindow):
+
+    def __init__(self):
+        super().__init__()
+
+        # create sub interface
+        self.homeInterface = Widget('Home', self)
+        self.tasklist = Widget('Task list', self)
+        self.calendar = Widget('Calendar', self)
+        self.settingInterface = Widget('Setting Interface', self)
+
+
+
+        # cartes
+
+
+
+
+
+
+        self.initNavigation()
+        self.initWindow()
+
+
+
+
+    def initNavigation(self):
+        self.addSubInterface(self.homeInterface, FIF.HOME, 'Home')
+        self.addSubInterface(self.tasklist, FIF.CHECKBOX, 'Task list')
+        self.addSubInterface(self.calendar, FIF.CALENDAR, 'Calendar')
+
+
+        self.navigationInterface.addSeparator()
+
+
+        # self.addSubInterface(self.showMessageBox, FIF.INFO, 'Info')
+
+        # add custom widget to bottom
+
+
+
+
+
+        self.navigationInterface.addWidget(
+            routeKey='avatar',
+            widget=NavigationAvatarWidget('Toto', 'media/int.png'),
+            onClick=self.showMessageBox,
+            position=NavigationItemPosition.BOTTOM,
+        )
+
+        self.addSubInterface(self.settingInterface, FIF.SETTING, 'Settings', NavigationItemPosition.BOTTOM)
+
+        # add badge to navigation item
+        item = self.navigationInterface.widget(self.calendar.objectName())
+        InfoBadge.attension(
+            text=9,
+            parent=item.parent(),
+            target=item,
+            position=InfoBadgePosition.NAVIGATION_ITEM
+        )
+
+        # NOTE: enable acrylic effect
+        # self.navigationInterface.setAcrylicEnabled(True)
+
+    def initWindow(self):
+        self.resize(900, 700)
+        self.setWindowIcon(QIcon('media/logo_day.png'))
+        self.setWindowTitle('To-do list')
+
+
+
+        desktop = QApplication.desktop().availableGeometry()
+        w, h = desktop.width(), desktop.height()
+        self.move(w//2 - self.width()//2, h//2 - self.height()//2)
+
+    def showMessageBox(self):
+        w = MessageBox(
+            '🎉🎉🎉',
+            'Bienvenue dans notre to-do list !',
+            self
+
+        )
+        w.yesButton.setText('Voir le rapport descriptif')
+        w.cancelButton.setText('Annuler')
+
+
+
+        if w.exec():
+            QDesktopServices.openUrl(QUrl("lien du rapport descriptif"))
+
+
+if __name__ == '__main__':
+    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
+
+    # setTheme(Theme.DARK)
+
+    app = QApplication(sys.argv)
+    w = Window()
+    w.show()
+    app.exec_()
