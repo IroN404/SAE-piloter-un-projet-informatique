@@ -35,7 +35,7 @@ class TaskListWidget(QFrame):
         self.taskTable.setHorizontalHeaderLabels(["Task Name", "Priority", "Person", "Status","Time Left","Progress"])
 
         self.taskListLayout = QVBoxLayout(self)
-        self.taskListLayout.addWidget(self.label, 1, Qt.AlignCenter)
+        self.taskListLayout.addWidget(self.label, 1, Qt.AlignLeft)
         self.taskListLayout.addWidget(self.taskLineEdit)
         self.taskListLayout.addWidget(self.priorityComboBox)
         self.taskListLayout.addWidget(self.personLineEdit)
@@ -76,11 +76,10 @@ class Widget(QFrame):
         self.label = SubtitleLabel(text, self)
         self.hBoxLayout = QHBoxLayout(self)
 
-        setFont(self.label, 24)
-        self.label.setAlignment(Qt.AlignCenter)
-        self.hBoxLayout.addWidget(self.label, 1, Qt.AlignCenter)
-        self.setObjectName(text.replace(' ', '-'))
-
+        setFont(self.label, 20)
+        self.label.setAlignment(Qt.AlignLeft)
+        self.hBoxLayout.addWidget(self.label, 1, Qt.AlignLeft)
+        self.setObjectName(text.replace('', '-'))
 
 
 
@@ -94,21 +93,7 @@ class Window(FluentWindow):
         self.tasklist = TaskListWidget('Task list', self)
         self.calendar = Widget('Calendar', self)
         self.settingInterface = Widget('Setting Interface', self)
-        self.gridgrid = QGridLayout()
-        self.widget = QWidget()
-        self.widget.setLayout(self.gridgrid)
-        self.widget.setObjectName("widget")
-        self.widget.setStyleSheet("QWidget#widget{background: red}")
-        self.gridgrid.setContentsMargins(0, 0, 0, 0)
-        self.gridgrid.setSpacing(0)
-        self.gridgrid.setObjectName("gridLayout_2")
-        self.gridgrid.addWidget(self.homeInterface, 0, 0, 1, 1)
-        self.gridgrid.addWidget(self.tasklist, 0, 1, 1, 1)
-        self.gridgrid.addWidget(self.calendar, 0, 2, 1, 1)
-        self.gridgrid.addWidget(self.settingInterface, 0, 3, 1, 1)
-        self.gridgrid.addWidget(self.widget, 1, 0, 1, 4)
-        self.gridgrid.setColumnStretch(0, 1)
-        self.gridgrid.setColumnStretch(1, 1)
+
 
         # cartes
 
@@ -162,7 +147,7 @@ class Window(FluentWindow):
         # self.navigationInterface.setAcrylicEnabled(True)
 
     def initWindow(self):
-        self.resize(900, 700)
+        self.resize(900, 400)
         self.setWindowIcon(QIcon('media/logo_day.png'))
         self.setWindowTitle('To-do list')
 
