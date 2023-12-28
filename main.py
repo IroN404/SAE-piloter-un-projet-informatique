@@ -129,7 +129,7 @@ class Window(FluentWindow):
 
         self.navigationInterface.addWidget(
             routeKey='avatar',
-            widget=NavigationAvatarWidget('Toto', 'media/int.png'),
+            widget=NavigationAvatarWidget('Toto', 'media/logo_day.png'),
             onClick=self.showMessageBox,
             position=NavigationItemPosition.BOTTOM,
         )
@@ -166,11 +166,11 @@ class Window(FluentWindow):
             self
 
         )
-        message.yesButton.setText('Voir le rapport descriptif')
+        message.yesButton.setText('Voir le rapport')
         message.cancelButton.setText('Annuler')
 
         if message.exec():
-            QDesktopServices.openUrl(QUrl("lien du rapport descriptif"))
+            QDesktopServices.openUrl(QUrl("lien du rapport"))
 
 
 if __name__ == '__main__':
