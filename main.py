@@ -12,8 +12,7 @@ from qfluentwidgets import (CardWidget, NavigationItemPosition, MessageBox, setT
                             NavigationAvatarWidget, qrouter, SubtitleLabel, setFont, InfoBadge, IconWidget, PushButton,
                             TransparentToolButton,
                             BodyLabel, InfoBadgePosition, FluentIcon)
-from qfluentwidgets import FluentIcon as \
-    FIF
+from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets.components.widgets.acrylic_label import AcrylicBrush
 
 
