@@ -1,6 +1,7 @@
 # coding:utf-8
 import sys
 
+from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QVBoxLayout, QTableWidget, QTableWidgetItem, QLineEdit, QComboBox, QDateEdit, QPushButton
 from PyQt5.QtCore import Qt, QUrl
 from pathlib import Path
 from PyQt5.QtGui import QIcon, QDesktopServices
@@ -11,7 +12,53 @@ from qfluentwidgets import (CardWidget,NavigationItemPosition, MessageBox, setTh
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets.components.widgets.acrylic_label import AcrylicBrush
 
+class TaskListWidget(QFrame):
+    def __init__(self, text: str, parent=None):
+        super().__init__(parent=parent)
 
+        self.label = SubtitleLabel(text, self)
+        setFont(self.label, 24)
+        self.label.setAlignment(Qt.AlignCenter)
+
+        self.taskLineEdit = QLineEdit(self)
+        self.priorityComboBox = QComboBox(self)
+        self.priorityComboBox.addItems(["Low", "Medium", "High"])
+        self.priorityComboBox.setStyleSheet("QComboBox { color: balck; }")
+        self.personLineEdit = QLineEdit(self)
+        self.addButton = QPushButton("Add Task", self)
+        self.taskTable = QTableWidget(self)
+        self.taskTable.setColumnCount(4)
+        self.taskTable.setHorizontalHeaderLabels(["Task", "Priority", "Person"])
+
+        self.taskListLayout = QVBoxLayout(self)
+        self.taskListLayout.addWidget(self.label, 1, Qt.AlignCenter)
+        self.taskListLayout.addWidget(self.taskLineEdit)
+        self.taskListLayout.addWidget(self.priorityComboBox)
+        self.taskListLayout.addWidget(self.personLineEdit)
+        self.taskListLayout.addWidget(self.addButton)
+        self.taskListLayout.addWidget(self.taskTable)
+
+        self.setObjectName(text.replace(' ', '-'))
+
+        # Connect the button click signal to the addTask method
+        self.addButton.clicked.connect(self.addTask)
+
+    def addTask(self):
+        task_text = self.taskLineEdit.text()
+        priority = self.priorityComboBox.currentText()
+        person = self.personLineEdit.text()
+
+        if task_text and priority and person != "":
+            row_position = self.taskTable.rowCount()
+            self.taskTable.insertRow(row_position)
+
+            self.taskTable.setItem(row_position, 0, QTableWidgetItem(task_text))
+            self.taskTable.setItem(row_position, 1, QTableWidgetItem(priority))
+            self.taskTable.setItem(row_position, 2, QTableWidgetItem(person))
+
+            self.taskLineEdit.clear()
+            self.priorityComboBox.setCurrentIndex(0)
+            self.personLineEdit.clear()
 
 class Widget(QFrame):
 
@@ -35,10 +82,9 @@ class Window(FluentWindow):
 
         # create sub interface
         self.homeInterface = Widget('Home', self)
-        self.tasklist = Widget('Task list', self)
+        self.tasklist = TaskListWidget('Task list', self)
         self.calendar = Widget('Calendar', self)
         self.settingInterface = Widget('Setting Interface', self)
-
 
 
         # cartes
