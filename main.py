@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QVBoxLayout, QTab
 from PyQt5.QtCore import Qt, QUrl
 from pathlib import Path
 from PyQt5.QtGui import QIcon, QDesktopServices
-from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QVBoxLayout, QGridLayout, QWidget
 from qfluentwidgets import (CardWidget,NavigationItemPosition, MessageBox, setTheme, Theme, FluentWindow,ImageLabel, CaptionLabel, ElevatedCardWidget,
                             NavigationAvatarWidget, qrouter, SubtitleLabel, setFont, InfoBadge,IconWidget, PushButton, TransparentToolButton,
                             BodyLabel, InfoBadgePosition,FluentIcon)
@@ -21,14 +21,18 @@ class TaskListWidget(QFrame):
         self.label.setAlignment(Qt.AlignCenter)
 
         self.taskLineEdit = QLineEdit(self)
+        self.taskLineEdit.setMaxLength(100)
+        self.taskLineEdit.setPlaceholderText("Entrez une tâche...")
         self.priorityComboBox = QComboBox(self)
         self.priorityComboBox.addItems(["Low", "Medium", "High"])
         self.priorityComboBox.setStyleSheet("QComboBox { color: balck; }")
         self.personLineEdit = QLineEdit(self)
+        self.personLineEdit.setMaxLength(100)
+        self.personLineEdit.setPlaceholderText("Personne en charge...")
         self.addButton = QPushButton("Add Task", self)
         self.taskTable = QTableWidget(self)
-        self.taskTable.setColumnCount(4)
-        self.taskTable.setHorizontalHeaderLabels(["Task", "Priority", "Person"])
+        self.taskTable.setColumnCount(6)
+        self.taskTable.setHorizontalHeaderLabels(["Task Name", "Priority", "Person", "Status","Time Left","Progress"])
 
         self.taskListLayout = QVBoxLayout(self)
         self.taskListLayout.addWidget(self.label, 1, Qt.AlignCenter)
@@ -55,6 +59,11 @@ class TaskListWidget(QFrame):
             self.taskTable.setItem(row_position, 0, QTableWidgetItem(task_text))
             self.taskTable.setItem(row_position, 1, QTableWidgetItem(priority))
             self.taskTable.setItem(row_position, 2, QTableWidgetItem(person))
+            self.taskTable.setItem(row_position, 3, QTableWidgetItem("To Do"))
+            self.taskTable.setItem(row_position, 4, QTableWidgetItem("1 day"))
+            self.taskTable.setItem(row_position, 5, QTableWidgetItem("0%"))
+
+
 
             self.taskLineEdit.clear()
             self.priorityComboBox.setCurrentIndex(0)
@@ -85,7 +94,21 @@ class Window(FluentWindow):
         self.tasklist = TaskListWidget('Task list', self)
         self.calendar = Widget('Calendar', self)
         self.settingInterface = Widget('Setting Interface', self)
-
+        self.gridgrid = QGridLayout()
+        self.widget = QWidget()
+        self.widget.setLayout(self.gridgrid)
+        self.widget.setObjectName("widget")
+        self.widget.setStyleSheet("QWidget#widget{background: red}")
+        self.gridgrid.setContentsMargins(0, 0, 0, 0)
+        self.gridgrid.setSpacing(0)
+        self.gridgrid.setObjectName("gridLayout_2")
+        self.gridgrid.addWidget(self.homeInterface, 0, 0, 1, 1)
+        self.gridgrid.addWidget(self.tasklist, 0, 1, 1, 1)
+        self.gridgrid.addWidget(self.calendar, 0, 2, 1, 1)
+        self.gridgrid.addWidget(self.settingInterface, 0, 3, 1, 1)
+        self.gridgrid.addWidget(self.widget, 1, 0, 1, 4)
+        self.gridgrid.setColumnStretch(0, 1)
+        self.gridgrid.setColumnStretch(1, 1)
 
         # cartes
 
@@ -142,6 +165,8 @@ class Window(FluentWindow):
         self.resize(900, 700)
         self.setWindowIcon(QIcon('media/logo_day.png'))
         self.setWindowTitle('To-do list')
+
+        # NOTE: enable acrylic effect
 
 
 
