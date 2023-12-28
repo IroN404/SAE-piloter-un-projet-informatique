@@ -1,16 +1,21 @@
 # coding:utf-8
 import sys
 
-from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QVBoxLayout, QTableWidget, QTableWidgetItem, QLineEdit, QComboBox, QDateEdit, QPushButton
+from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QVBoxLayout, QTableWidget, QTableWidgetItem, QLineEdit, \
+    QComboBox, QDateEdit, QPushButton
 from PyQt5.QtCore import Qt, QUrl
 from pathlib import Path
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QVBoxLayout, QGridLayout, QWidget
-from qfluentwidgets import (CardWidget,NavigationItemPosition, MessageBox, setTheme, Theme, FluentWindow,ImageLabel, CaptionLabel, ElevatedCardWidget,
-                            NavigationAvatarWidget, qrouter, SubtitleLabel, setFont, InfoBadge,IconWidget, PushButton, TransparentToolButton,
-                            BodyLabel, InfoBadgePosition,FluentIcon)
-from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import (CardWidget, NavigationItemPosition, MessageBox, setTheme, Theme, FluentWindow, ImageLabel,
+                            CaptionLabel, ElevatedCardWidget,
+                            NavigationAvatarWidget, qrouter, SubtitleLabel, setFont, InfoBadge, IconWidget, PushButton,
+                            TransparentToolButton,
+                            BodyLabel, InfoBadgePosition, FluentIcon)
+from qfluentwidgets import FluentIcon as \
+    FIF
 from qfluentwidgets.components.widgets.acrylic_label import AcrylicBrush
+
 
 class TaskListWidget(QFrame):
     def __init__(self, text: str, parent=None):
@@ -25,14 +30,14 @@ class TaskListWidget(QFrame):
         self.taskLineEdit.setPlaceholderText("Entrez une tâche...")
         self.priorityComboBox = QComboBox(self)
         self.priorityComboBox.addItems(["Low", "Medium", "High"])
-        self.priorityComboBox.setStyleSheet("QComboBox { color: balck; }")
+        self.priorityComboBox.setStyleSheet("QComboBox { color: black; }")
         self.personLineEdit = QLineEdit(self)
         self.personLineEdit.setMaxLength(100)
         self.personLineEdit.setPlaceholderText("Personne en charge...")
         self.addButton = QPushButton("Add Task", self)
         self.taskTable = QTableWidget(self)
         self.taskTable.setColumnCount(6)
-        self.taskTable.setHorizontalHeaderLabels(["Task Name", "Priority", "Person", "Status","Time Left","Progress"])
+        self.taskTable.setHorizontalHeaderLabels(["Task Name", "Priority", "Person", "Status", "Time Left", "Progress"])
 
         self.taskListLayout = QVBoxLayout(self)
         self.taskListLayout.addWidget(self.label, 1, Qt.AlignCenter)
@@ -63,11 +68,10 @@ class TaskListWidget(QFrame):
             self.taskTable.setItem(row_position, 4, QTableWidgetItem("1 day"))
             self.taskTable.setItem(row_position, 5, QTableWidgetItem("0%"))
 
-
-
             self.taskLineEdit.clear()
             self.priorityComboBox.setCurrentIndex(0)
             self.personLineEdit.clear()
+
 
 class Widget(QFrame):
 
@@ -80,8 +84,6 @@ class Widget(QFrame):
         self.label.setAlignment(Qt.AlignCenter)
         self.hBoxLayout.addWidget(self.label, 1, Qt.AlignCenter)
         self.setObjectName(text.replace(' ', '-'))
-
-
 
 
 class Window(FluentWindow):
@@ -112,33 +114,19 @@ class Window(FluentWindow):
 
         # cartes
 
-
-
-
-
-
         self.initNavigation()
         self.initWindow()
-
-
-
 
     def initNavigation(self):
         self.addSubInterface(self.homeInterface, FIF.HOME, 'Home')
         self.addSubInterface(self.tasklist, FIF.CHECKBOX, 'Task list')
         self.addSubInterface(self.calendar, FIF.CALENDAR, 'Calendar')
 
-
         self.navigationInterface.addSeparator()
-
 
         # self.addSubInterface(self.showMessageBox, FIF.INFO, 'Info')
 
         # add custom widget to bottom
-
-
-
-
 
         self.navigationInterface.addWidget(
             routeKey='avatar',
@@ -168,25 +156,21 @@ class Window(FluentWindow):
 
         # NOTE: enable acrylic effect
 
-
-
         desktop = QApplication.desktop().availableGeometry()
-        w, h = desktop.width(), desktop.height()
-        self.move(w//2 - self.width()//2, h//2 - self.height()//2)
+        message, h = desktop.width(), desktop.height()
+        self.move(message // 2 - self.width() // 2, h // 2 - self.height() // 2)
 
     def showMessageBox(self):
-        w = MessageBox(
+        message = MessageBox(
             '🎉🎉🎉',
             'Bienvenue dans notre to-do list !',
             self
 
         )
-        w.yesButton.setText('Voir le rapport descriptif')
-        w.cancelButton.setText('Annuler')
+        message.yesButton.setText('Voir le rapport descriptif')
+        message.cancelButton.setText('Annuler')
 
-
-
-        if w.exec():
+        if message.exec():
             QDesktopServices.openUrl(QUrl("lien du rapport descriptif"))
 
 
