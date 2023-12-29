@@ -1,8 +1,7 @@
 # coding:utf-8
 import sys
 
-from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QVBoxLayout, QTableWidget, QTableWidgetItem, QLineEdit, \
-    QComboBox, QDateEdit, QPushButton, QCalendarWidget, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox, QDesktopWidget, QGridLayout, QLabel, QLineEdit, QFormLayout, QComboBox, QTableWidget, QTableWidgetItem, QFrame, QVBoxLayout, QHBoxLayout, QGroupBox, QScrollArea, QSizePolicy, QSpacerItem, QStyle, QStyleOption, QFileDialog, QDialog, QDateEdit, QCheckBox, QProgressBar, QSlider, QDial, QCalendarWidget, QTabWidget, QTabBar, QStackedWidget, QToolButton, QMenu, QMenuBar, QStatusBar, QToolBar, QDockWidget, QStyleFactory, QSystemTrayIcon, QCompleter, QShortcut, QKeySequenceEdit, QSplitter, QInputDialog, QCommandLinkButton, QAbstractItemView, QHeaderView, QStyleOptionViewItem, QStyleOptionTab, QStylePainter, QStyleOptionTabBarBase
 from PyQt5.QtCore import Qt, QUrl, QRect, QDate
 from pathlib import Path
 from PyQt5.QtGui import QIcon, QDesktopServices, QFont
@@ -13,6 +12,33 @@ from qfluentwidgets import (CardWidget,NavigationItemPosition, MessageBox, setTh
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets.components.widgets.acrylic_label import AcrylicBrush
 
+class AddTaskDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.setWindowTitle("Add Task")
+        self.setFixedSize(300, 200)
+        self.setModal(True)
+
+        self.taskLineEdit = QLineEdit(self)
+        self.taskLineEdit.setPlaceholderText("Entrez une tâche...")
+
+        self.priorityComboBox = QComboBox(self)
+        self.priorityComboBox.addItems(["Low", "Medium", "High"])
+        self.priorityComboBox.setStyleSheet("QComboBox { color: black; }")
+
+        self.personLineEdit = QLineEdit(self)
+        self.personLineEdit.setPlaceholderText("Personne en charge...")
+
+        self.addButton = QPushButton("Add", self)
+        self.addButton.clicked.connect(self.accept)
+
+        layout = QFormLayout(self)
+        layout.addRow("Task Name:", self.taskLineEdit)
+        layout.addRow("Priority:", self.priorityComboBox)
+        layout.addRow("Person:", self.personLineEdit)
+        layout.addRow(self.addButton)
+
 class TaskListWidget(QFrame):
     def __init__(self, text: str, parent=None):
         super().__init__(parent=parent)
@@ -21,55 +47,146 @@ class TaskListWidget(QFrame):
         setFont(self.label, 24)
         self.label.setAlignment(Qt.AlignCenter)
 
-        self.taskLineEdit = QLineEdit(self)
-        self.taskLineEdit.setMaxLength(100)
-        self.taskLineEdit.setPlaceholderText("Entrez une tâche...")
-        self.priorityComboBox = QComboBox(self)
-        self.priorityComboBox.addItems(["Low", "Medium", "High"])
-        self.priorityComboBox.setStyleSheet("QComboBox { color: balck; }")
-        self.personLineEdit = QLineEdit(self)
-        self.personLineEdit.setMaxLength(100)
-        self.personLineEdit.setPlaceholderText("Personne en charge...")
-        self.addButton = QPushButton("Add Task", self)
+        self.addButton = QPushButton("+", self)
+        self.addButton.setStyleSheet("""
+            QPushButton {
+                font-size: 24px;
+                color: white;   
+                background-color: #0078d7;
+                border-radius: 10px;
+                border: none;
+                width: 40px;
+                height: 40px;
+                text-align: center;
+                item-align: center;
+            }
+            QPushButton:hover {
+                background-color: #0063ad;
+            }   
+        """)
+        self.addButton.setFixedSize(1000, 40)
+   
         self.taskTable = QTableWidget(self)
-        self.taskTable.setColumnCount(6)
-        self.taskTable.setHorizontalHeaderLabels(["Task Name", "Priority", "Person", "Status","Time Left","Progress"])
+        self.setStyleSheet("""
+            
+    QTableWidget {
+        background-color: white;
+        color: black;
+    }
+
+    QTableWidget QHeaderView::section {
+        background-color: #4DA8DA;
+        color: white;
+        font-size: 18px;
+        height: 40px;
+    }
+
+    QTableWidget QTableCornerButton::section {
+        background-color: #4DA8DA;
+        color: white;
+        font-size: 18px;
+        height: 40px;
+    }
+
+    QTableWidget QScrollBar:vertical {
+        background-color: #4DA8DA;
+        width: 16px;
+    }
+
+    QTableWidget QScrollBar::handle:vertical {
+        background-color: #0078D4;
+        border: 1px solid #4DA8DA;
+        border-radius: 8px;
+    }
+
+    QTableWidget QScrollBar::add-line:vertical {
+        background-color: #4DA8DA;
+        height: 16px;
+        subcontrol-position: bottom;
+        subcontrol-origin: margin;
+    }
+
+    QTableWidget QScrollBar::sub-line:vertical {
+        background-color: #4DA8DA;
+        height: 16px;
+        subcontrol-position: top;
+        subcontrol-origin: margin;
+    }
+
+    QTableWidget QScrollBar::up-arrow:vertical, QTableWidget QScrollBar::down-arrow:vertical {
+        width: 16px;
+        height: 16px;
+        background-color: #0078D4;
+    }
+
+    QTableWidget QScrollBar::add-page:vertical, QTableWidget QScrollBar::sub-page:vertical {
+        background-color: #4DA8DA;
+    }
+
+    QTableWidget::item:selected {
+        background-color: #0078D4;
+        color: white;
+    }
+""")
+        self.taskTable.setColumnCount(7)
+
+
+# ainsi les colonnes prennent toute la place disponible
+        header = self.taskTable.horizontalHeader()
+        for i in range(7):
+            header.setSectionResizeMode(i, QHeaderView.Stretch)
+        self.taskTable.setHorizontalHeaderLabels(["Task Name", "Priority", "Person", "Status", "Time Left", "Progress", "Actions"])
 
         self.taskListLayout = QVBoxLayout(self)
         self.taskListLayout.addWidget(self.label, 1, Qt.AlignLeft)
-        self.taskListLayout.addWidget(self.taskLineEdit)
-        self.taskListLayout.addWidget(self.priorityComboBox)
-        self.taskListLayout.addWidget(self.personLineEdit)
         self.taskListLayout.addWidget(self.addButton)
         self.taskListLayout.addWidget(self.taskTable)
 
         self.setObjectName(text.replace(' ', '-'))
 
-        # Connect the button click signal to the addTask method
-        self.addButton.clicked.connect(self.addTask)
+        # Connect the button click signal to the showAddTaskDialog method
+        self.addButton.clicked.connect(self.showAddTaskDialog)
 
-    def addTask(self):
-        task_text = self.taskLineEdit.text()
-        priority = self.priorityComboBox.currentText()
-        person = self.personLineEdit.text()
+    def showAddTaskDialog(self):
+        dialog = AddTaskDialog(self)
+        result = dialog.exec_()
 
-        if task_text and priority and person != "":
-            row_position = self.taskTable.rowCount()
-            self.taskTable.insertRow(row_position)
+        if result == QDialog.Accepted:
+            task_text = dialog.taskLineEdit.text()
+            priority = dialog.priorityComboBox.currentText()
+            person = dialog.personLineEdit.text()
 
-            self.taskTable.setItem(row_position, 0, QTableWidgetItem(task_text))
-            self.taskTable.setItem(row_position, 1, QTableWidgetItem(priority))
-            self.taskTable.setItem(row_position, 2, QTableWidgetItem(person))
-            self.taskTable.setItem(row_position, 3, QTableWidgetItem("To Do"))
-            self.taskTable.setItem(row_position, 4, QTableWidgetItem("1 day"))
-            self.taskTable.setItem(row_position, 5, QTableWidgetItem("0%"))
+            if task_text and priority and person != "":
+                row_position = self.taskTable.rowCount()
+                self.taskTable.insertRow(row_position)
+
+                self.taskTable.setItem(row_position, 0, QTableWidgetItem(task_text))
+                self.taskTable.setItem(row_position, 1, QTableWidgetItem(priority))
+                self.taskTable.setItem(row_position, 2, QTableWidgetItem(person))
+                self.taskTable.setItem(row_position, 3, QTableWidgetItem("To Do"))
+                self.taskTable.setItem(row_position, 4, QTableWidgetItem("1 day"))
+                self.taskTable.setItem(row_position, 5, QTableWidgetItem("0%"))
+                
 
 
+            # Add Edit and Delete buttons
+            delete_button = QPushButton("❌", self)
 
-            self.taskLineEdit.clear()
-            self.priorityComboBox.setCurrentIndex(0)
-            self.personLineEdit.clear()
+            # Connect button clicks to corresponding methods
+            delete_button.clicked.connect(lambda: self.deleteTask(row_position))
 
+            # Add buttons to the "Actions" column
+            self.taskTable.setCellWidget(row_position, 6, delete_button)
+            
+            
+
+    def editTask(self, row):
+        # Add logic for editing task
+        pass
+
+    def deleteTask(self, row):
+        # Add logic for deleting task
+        self.taskTable.removeRow(row)
 
 
 
@@ -89,51 +206,59 @@ class CalendarWidget(QFrame):
         # Création du calendrier
         self.calendar = QCalendarWidget(self)
         self.calendar.setStyleSheet("""
-            QCalendarWidget QToolButton {
-                height: 60px;
-                width: 150px;
-                color: white;
-                font-size: 24px;
-                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop: 0 #cccccc, stop: 1 #333333);
-            }
-            QCalendarWidget QMenu {
-                width: 150px;
-                color: white;
-                font-size: 18px;
-                background-color: rgb(100, 100, 100);
-            }
-            QCalendarWidget QSpinBox {
-                width: 150px;
-                font-size: 24px;
-                color: white;
-                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop: 0 #cccccc, stop: 1 #333333);
-                selection-background-color: rgb(136, 136, 136);
-                selection-color: rgb(255, 255, 255);
-            }
-            QCalendarWidget QSpinBox::up-button {
-                subcontrol-origin: border;
-                subcontrol-position: top right;
-                width: 65px;
-            }
-            QCalendarWidget QSpinBox::down-button {
-                subcontrol-origin: border;
-                subcontrol-position: bottom right;
-                width: 65px;
-            }
-            QCalendarWidget QWidget#qt_calendar_navigationbar {
-                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop: 0 #cccccc, stop: 1 #333333);
-            }
-            QCalendarWidget QAbstractItemView:enabled {
-                font-size: 24px;
-                color: rgb(180, 180, 180);
-                background-color: black;
-                selection-background-color: rgb(64, 64, 64);
-                selection-color: rgb(0, 255, 0);
-            }
-            QCalendarWidget QAbstractItemView:disabled {
-                color: rgb(64, 64, 64);
-            }
-        """)
+    QCalendarWidget QToolButton {
+        height: 60px;
+        width: 150px;
+        color: white;
+        font-size: 24px;
+        background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop: 0 #4DA8DA, stop: 1 #0078D4);
+        border: none;
+    }
+    
+    QCalendarWidget QMenu {
+        width: 150px;
+        color: white;
+        font-size: 18px;
+        background-color: #0078D4;
+    }
+    
+    QCalendarWidget QSpinBox {
+        width: 150px;
+        font-size: 24px;
+        color: white;
+        background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop: 0 #4DA8DA, stop: 1 #0078D4);
+        selection-background-color: #003366;
+        selection-color: white;
+    }
+    
+    QCalendarWidget QSpinBox::up-button {
+        subcontrol-origin: border;
+        subcontrol-position: top right;
+        width: 65px;
+    }
+    
+    QCalendarWidget QSpinBox::down-button {
+        subcontrol-origin: border;
+        subcontrol-position: bottom right;
+        width: 65px;
+    }
+    
+    QCalendarWidget QWidget#qt_calendar_navigationbar {
+        background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop: 0 #4DA8DA, stop: 1 #0078D4);
+    }
+    
+    QCalendarWidget QAbstractItemView:enabled {
+        font-size: 24px;
+        color: #B4B4B4;
+        background-color: white;
+        selection-background-color: #404040;
+        selection-color: #00FF00;
+    }
+    
+    QCalendarWidget QAbstractItemView:disabled {
+        color: #404040;
+    }
+""")
 
         # Configuration du layout
         self.layout = QVBoxLayout(self)
@@ -158,47 +283,44 @@ class SettingInterface(QFrame):
 class HomeInterface(QFrame):
     def __init__(self, text: str, parent=None):
         super().__init__(parent=parent)
-        self.label = SubtitleLabel(text, self)
-        self.hBoxLayout = QHBoxLayout(self)
 
-        setFont(self.label, 20)
-        self.label.setAlignment(Qt.AlignLeft)
-        self.hBoxLayout.addWidget(self.label, 1, Qt.AlignCenter)
-        self.setObjectName(text.replace('', '-'))
+        self.setObjectName(text.replace(' ', '-'))
 
-        self.vBoxLayout = QVBoxLayout(self)
-        self.vBoxLayout.addWidget(self.label, 1, Qt.AlignCenter)
-        self.setObjectName(text.replace('', '-'))
+        # Create a main vertical layout
+        self.mainLayout = QVBoxLayout(self)
 
-        self.label = CaptionLabel('Bienvenue dans notre application de gestion de tâches !', self)
-        self.vBoxLayout.addWidget(self.label, 1, Qt.AlignCenter)
-        self.setObjectName(text.replace('', '-'))
+        # Add a subtitle label
+        subtitleLabel = SubtitleLabel(text, self)
+        setFont(subtitleLabel, 20)
+        subtitleLabel.setAlignment(Qt.AlignLeft)
+        self.mainLayout.addWidget(subtitleLabel)
 
-        self.label = CaptionLabel('Vous pouvez aussi voir les tâches de vos collaborateurs et les modifier si besoin.', self)
-        self.vBoxLayout.addWidget(self.label, 1, Qt.AlignCenter)
-        self.vBoxLayout.addWidget(self.RecentTask())
-        self.setObjectName(text.replace('', '-'))
+        # Add a caption label
+        welcomeLabel = CaptionLabel('Bienvenue dans notre application de gestion de tâches !', self)
+        self.mainLayout.addWidget(welcomeLabel)
+
+        # Add another caption label
+        descriptionLabel = CaptionLabel('Vous pouvez aussi voir les tâches de vos collaborateurs et les modifier si besoin.', self)
+        self.mainLayout.addWidget(descriptionLabel)
+
+        # Add the recent task section
+        self.mainLayout.addWidget(self.RecentTask())
 
     def RecentTask(self):
-        # Vérifier s'il y a des tâches dans la table
-        if self.vBoxLayout.count() == 0:
-            # Aucune tâche, afficher un message
-            no_task_label = QLabel("Aucune tâche récente.", self)
-            no_task_label.setAlignment(Qt.AlignCenter)
+        recentTaskFrame = QFrame(self)
 
-            # Créer un layout pour centrer le message
-            layout = QVBoxLayout(self)
-            layout.addWidget(self.vBoxLayout.label, 1, Qt.AlignCenter)
-            layout.addWidget(self.vBoxLayout.taskLineEdit)
-            layout.addWidget(self.vBoxLayout.priorityComboBox)
-            layout.addWidget(self.vBoxLayout.personLineEdit)
-            layout.addWidget(self.vBoxLayout.addButton)
-            layout.addWidget(self.vBoxLayout.taskTable)
+        # Example: Add a label for no recent tasks
+        noTaskLabel = QLabel("Aucune tâche récente.", recentTaskFrame)
+        noTaskLabel.setAlignment(Qt.AlignCenter)
 
+        # TODO: Add your task-related widgets and layout here
 
+        # Example: Create a layout for centering the message
+        layout = QVBoxLayout(recentTaskFrame)
+        layout.addWidget(noTaskLabel)
 
-            layout.addWidget(no_task_label)
-            self.setLayout(layout)
+        recentTaskFrame.setLayout(layout)
+        return recentTaskFrame
 
 
 class Widget(QFrame):
