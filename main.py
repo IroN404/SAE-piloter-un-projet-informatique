@@ -147,6 +147,9 @@ class TaskListWidget(QFrame):
         # Connect the button click signal to the showAddTaskDialog method
         self.addButton.clicked.connect(self.showAddTaskDialog)
 
+
+
+
     def showAddTaskDialog(self):
         dialog = AddTaskDialog(self)
         result = dialog.exec_()
@@ -165,10 +168,66 @@ class TaskListWidget(QFrame):
                 self.taskTable.setItem(row_position, 2, QTableWidgetItem(person))
                 self.taskTable.setItem(row_position, 3, QTableWidgetItem("To Do"))
                 self.taskTable.setItem(row_position, 4, QTableWidgetItem("1 day"))
-                self.taskTable.setItem(row_position, 5, QTableWidgetItem("0%"))
+
+                # Création et configuration de la barre de progression
+                progressBar = QProgressBar()
+                progressBar.setMinimum(0)
+                progressBar.setMaximum(100)
+                progressBar.setValue(0)  # Démarre à 0%
+                progressBar.setStyleSheet("""
+                    QProgressBar {
+                        border: 2px solid grey;
+                        border-radius: 1px;
+                        text-align: center;
+                        background-color: #5DADE2;
+                    }
+
+                    QProgressBar::chunk {
+                        background-color: #5DADE2;  # Couleur bleutée
+                        width: 10px;  # Largeur des chunks de la barre de progression
+                    }
+                """)
+
+                # Ajout de la barre de progression à la cellule du tableau
+                self.taskTable.setCellWidget(row_position, 5, progressBar)
+
+            def updateProgressBar(self, row, value):
+                progressBar = self.taskTable.cellWidget(row, 5)
+                progressBar.setValue(value)
+
+            # Add a slider to the "Progress" column
+            slider = QSlider(Qt.Horizontal, self)
+            slider.setStyleSheet("""
+                QSlider {
+                    background-color: #5DADE2;
+                }
                 
-
-
+                QSlider::groove:horizontal {
+                    border: 1px solid #bbb;
+                    background: white;
+                    height: 10px;
+                    border-radius: 4px;
+                }
+                
+                QSlider::sub-page:horizontal {
+                    background: #5DADE2;
+                    border-radius: 4px;
+                }
+                
+                QSlider::add-page:horizontal {
+                    background: #5DADE2;
+                    border-radius: 4px;
+                }
+                
+                QSlider::handle:horizontal {
+                    background: #5DADE2;
+                    border: 1px solid #5DADE2;
+                    width: 18px;
+                    margin-top: -4px;
+                    margin-bottom: -4px;
+                    border-radius: 4px;
+                }
+            """)
             # Add Edit and Delete buttons
             delete_button = QPushButton("❌", self)
 
