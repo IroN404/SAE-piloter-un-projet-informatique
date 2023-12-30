@@ -1,6 +1,6 @@
 # coding:utf-8
 import sys
-
+import sqlite3
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox, QDesktopWidget, QGridLayout, QLabel, QLineEdit, QFormLayout, QComboBox, QTableWidget, QTableWidgetItem, QFrame, QVBoxLayout, QHBoxLayout, QGroupBox, QScrollArea, QSizePolicy, QSpacerItem, QStyle, QStyleOption, QFileDialog, QDialog, QDateEdit, QCheckBox, QProgressBar, QSlider, QDial, QCalendarWidget, QTabWidget, QTabBar, QStackedWidget, QToolButton, QMenu, QMenuBar, QStatusBar, QToolBar, QDockWidget, QStyleFactory, QSystemTrayIcon, QCompleter, QShortcut, QKeySequenceEdit, QSplitter, QInputDialog, QCommandLinkButton, QAbstractItemView, QHeaderView, QStyleOptionViewItem, QStyleOptionTab, QStylePainter, QStyleOptionTabBarBase
 from PyQt5.QtCore import Qt, QUrl, QRect, QDate
 from pathlib import Path
@@ -11,6 +11,42 @@ from qfluentwidgets import (CardWidget,NavigationItemPosition, MessageBox, setTh
                             BodyLabel, InfoBadgePosition,FluentIcon)
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets.components.widgets.acrylic_label import AcrylicBrush
+
+
+class DatabaseManager:
+    def __init__(self, db_file="tasks.db"):
+        self.conn = sqlite3.connect(db_file)
+        self.create_table()
+
+    def create_table(self):
+        query = """
+            CREATE TABLE IF NOT EXISTS tasks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                task_name TEXT,
+                priority TEXT,
+                person TEXT,
+                status TEXT,
+                time_left TEXT
+            )
+        """
+        with self.conn:
+            self.conn.execute(query)
+
+    def insert_task(self, task_name, priority, person, status, time_left):
+        query = "INSERT INTO tasks (task_name, priority, person, status, time_left) VALUES (?, ?, ?, ?, ?)"
+        with self.conn:
+            self.conn.execute(query, (task_name, priority, person, status, time_left))
+
+    def fetch_all_tasks(self):
+        query = "SELECT * FROM tasks"
+        with self.conn:
+            cursor = self.conn.execute(query)
+            return cursor.fetchall()
+    
+    def delete_task(self, task_id):
+        query = "DELETE FROM tasks WHERE id = ?"
+        with self.conn:
+            self.conn.execute(query, (task_id,))
 
 class AddTaskDialog(QDialog):
     def __init__(self, parent=None):
@@ -25,7 +61,7 @@ class AddTaskDialog(QDialog):
 
         self.priorityComboBox = QComboBox(self)
         self.priorityComboBox.addItems(["Low", "Medium", "High"])
-        self.priorityComboBox.setStyleSheet("QComboBox { color: black; }")
+        self.priorityComboBox.setStyleSheet("QComboBox { color: white; }")
 
         self.personLineEdit = QLineEdit(self)
         self.personLineEdit.setPlaceholderText("Personne en charge...")
@@ -40,7 +76,7 @@ class AddTaskDialog(QDialog):
         layout.addRow(self.addButton)
 
 class TaskListWidget(QFrame):
-    def __init__(self, text: str, parent=None):
+    def __init__(self, text: str, db_manager, parent=None):
         super().__init__(parent=parent)
 
         self.label = SubtitleLabel(text, self)
@@ -64,7 +100,7 @@ class TaskListWidget(QFrame):
                 background-color: #0063ad;
             }   
         """)
-        self.addButton.setFixedSize(1000, 40)
+        self.addButton.setFixedSize(100, 40)
    
         self.taskTable = QTableWidget(self)
         self.setStyleSheet("""
@@ -144,12 +180,16 @@ class TaskListWidget(QFrame):
 
         self.setObjectName(text.replace(' ', '-'))
 
+        # Add the following line to initialize the db_manager attribute
+        self.db_manager = db_manager
+
         # Connect the button click signal to the showAddTaskDialog method
         self.addButton.clicked.connect(self.showAddTaskDialog)
 
+        # Load tasks from the database when the widget is created
+        self.load_tasks_from_database()
 
-
-
+        
     def showAddTaskDialog(self):
         dialog = AddTaskDialog(self)
         result = dialog.exec_()
@@ -160,92 +200,70 @@ class TaskListWidget(QFrame):
             person = dialog.personLineEdit.text()
 
             if task_text and priority and person != "":
-                row_position = self.taskTable.rowCount()
-                self.taskTable.insertRow(row_position)
+                # Insert the task into the database
+                self.db_manager.insert_task(task_text, priority, person, "To Do", "1 day")
 
-                self.taskTable.setItem(row_position, 0, QTableWidgetItem(task_text))
-                self.taskTable.setItem(row_position, 1, QTableWidgetItem(priority))
-                self.taskTable.setItem(row_position, 2, QTableWidgetItem(person))
-                self.taskTable.setItem(row_position, 3, QTableWidgetItem("To Do"))
-                self.taskTable.setItem(row_position, 4, QTableWidgetItem("1 day"))
+                # Load tasks from the database after inserting a new task
+                self.load_tasks_from_database()
+    
+    def add_task_to_table(self, task_data):
+        # Effacez le contenu de la table
+        self.taskTable.setRowCount(0)
 
-                # Création et configuration de la barre de progression
-                progressBar = QProgressBar()
-                progressBar.setMinimum(0)
-                progressBar.setMaximum(100)
-                progressBar.setValue(0)  # Démarre à 0%
-                progressBar.setStyleSheet("""
-                    QProgressBar {
-                        border: 2px solid grey;
-                        border-radius: 1px;
-                        text-align: center;
-                        background-color: #5DADE2;
-                    }
+        # Ajoutez les nouvelles lignes
+        for task_data in self.db_manager.fetch_all_tasks():
+            row_position = self.taskTable.rowCount()
+            self.taskTable.insertRow(row_position)
 
-                    QProgressBar::chunk {
-                        background-color: #5DADE2;  # Couleur bleutée
-                        width: 10px;  # Largeur des chunks de la barre de progression
-                    }
-                """)
+            for col, data in enumerate(task_data):
+                item = QTableWidgetItem(str(data))
+                self.taskTable.setItem(row_position, col, item)
 
-                # Ajout de la barre de progression à la cellule du tableau
-                self.taskTable.setCellWidget(row_position, 5, progressBar)
+            # Ajoutez des boutons pour les actions (par exemple, supprimer)
+            delete_button = QPushButton("X", self)
+            delete_button.setStyleSheet("""
+                QPushButton {
+                    font-size: 15px;
+                    color: red;
 
-            def updateProgressBar(self, row, value):
-                progressBar = self.taskTable.cellWidget(row, 5)
-                progressBar.setValue(value)
-
-            # Add a slider to the "Progress" column
-            slider = QSlider(Qt.Horizontal, self)
-            slider.setStyleSheet("""
-                QSlider {
-                    background-color: #5DADE2;
                 }
-                
-                QSlider::groove:horizontal {
-                    border: 1px solid #bbb;
-                    background: white;
-                    height: 10px;
-                    border-radius: 4px;
-                }
-                
-                QSlider::sub-page:horizontal {
-                    background: #5DADE2;
-                    border-radius: 4px;
-                }
-                
-                QSlider::add-page:horizontal {
-                    background: #5DADE2;
-                    border-radius: 4px;
-                }
-                
-                QSlider::handle:horizontal {
-                    background: #5DADE2;
-                    border: 1px solid #5DADE2;
-                    width: 18px;
-                    margin-top: -4px;
-                    margin-bottom: -4px;
-                    border-radius: 4px;
-                }
-            """)
-            # Add Edit and Delete buttons
-            delete_button = QPushButton("❌", self)
-
-            # Connect button clicks to corresponding methods
-            delete_button.clicked.connect(lambda: self.deleteTask(row_position))
-
-            # Add buttons to the "Actions" column
+            """)  
+            delete_button.clicked.connect(lambda _, row=row_position: self.deleteTask(row))
             self.taskTable.setCellWidget(row_position, 6, delete_button)
-            
-            
 
-    def editTask(self, row):
-        # Add logic for editing task
-        pass
 
     def deleteTask(self, row):
-        # Add logic for deleting task
+        reply = QMessageBox.question(
+            self,
+            'Confirmation',
+            'Êtes-vous sûr de vouloir supprimer cette tâche ?',
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+
+        if reply == QMessageBox.Yes:
+            # Appel à la méthode delete_task_from_database
+            self.delete_task_from_database(row)
+    
+    def delete_task_from_database(self, row):
+        # Récupérez l'ID de la tâche à supprimer
+        task_id = self.taskTable.item(row, 0).text()
+
+        # Supprimez la tâche de la base de données
+        # Notez que vous devrez peut-être ajuster la méthode delete_task dans DatabaseManager
+        self.db_manager.delete_task(task_id)
+
+        # Supprimez la ligne de la table
         self.taskTable.removeRow(row)
+    
+    # Load tasks from the database when the widget is created
+        self.load_tasks_from_database()
+
+    def load_tasks_from_database(self):
+        self.taskTable.clearContents()
+        tasks = self.db_manager.fetch_all_tasks()
+        for task in tasks:
+            self.add_task_to_table(task)
 
 
 
@@ -401,13 +419,24 @@ class Window(FluentWindow):
     def __init__(self):
         super().__init__()
 
+         # Create an instance of DatabaseManager
+        self.db_manager = DatabaseManager()
+
         # create sub interface
         self.homeInterface = HomeInterface('Home', self)
-        self.tasklist = TaskListWidget('Task list', self)
+        self.tasklist = TaskListWidget('Task list', self.db_manager, self)
         self.calendar = CalendarWidget('Calendar', self)
         self.settingInterface = Widget('Setting Interface', self)
 
+        def showMessageBox(self):
+        # Use self.db_manager to interact with the database
+            self.db_manager.insert_task("Sample Task", "High", "John Doe", "To Do", "1 day")
 
+            w = MessageBox(
+                '🎉🎉🎉',
+                'Bienvenue dans notre to-do list !',
+                self
+            )
         # cartes
 
 
