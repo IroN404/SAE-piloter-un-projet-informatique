@@ -171,7 +171,7 @@ class TaskListWidget(QFrame):
         header = self.taskTable.horizontalHeader()
         for i in range(7):
             header.setSectionResizeMode(i, QHeaderView.Stretch)
-        self.taskTable.setHorizontalHeaderLabels(["Task Name", "Priority", "Person", "Status", "Time Left", "Progress", "Actions"])
+        self.taskTable.setHorizontalHeaderLabels(["id", "Task Name", "Priority", "Person", "Status", "Time Left", "Progress", "Actions"])
 
         self.taskListLayout = QVBoxLayout(self)
         self.taskListLayout.addWidget(self.label, 1, Qt.AlignLeft)
@@ -215,6 +215,7 @@ class TaskListWidget(QFrame):
             row_position = self.taskTable.rowCount()
             self.taskTable.insertRow(row_position)
 
+            # Commencez à ajouter des éléments à partir de la colonne 0
             for col, data in enumerate(task_data):
                 item = QTableWidgetItem(str(data))
                 self.taskTable.setItem(row_position, col, item)
@@ -225,12 +226,10 @@ class TaskListWidget(QFrame):
                 QPushButton {
                     font-size: 15px;
                     color: red;
-
                 }
             """)  
             delete_button.clicked.connect(lambda _, row=row_position: self.deleteTask(row))
             self.taskTable.setCellWidget(row_position, 6, delete_button)
-
 
     def deleteTask(self, row):
         reply = QMessageBox.question(
