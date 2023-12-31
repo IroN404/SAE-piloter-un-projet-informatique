@@ -37,6 +37,12 @@ class DatabaseManager:
         with self.conn:
             self.conn.execute(query, (task_name, priority, person, status, time_left))
 
+
+    def update_task_status(self, task_id, new_status):
+        query = "UPDATE tasks SET status = ? WHERE id = ?"
+        with self.conn:
+            self.conn.execute(query, (new_status, task_id))
+
     def fetch_all_tasks(self):
         query = "SELECT * FROM tasks"
         with self.conn:
@@ -99,6 +105,25 @@ class AddTaskDialog(QDialog):
         layout.addRow("Person:", self.personLineEdit)
         layout.addRow("Deadline:", self.deadlineEdit)
         layout.addRow(self.addButton)
+
+class StatusWidget(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.init_ui()
+
+    def init_ui(self):
+        self.layout = QHBoxLayout(self)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+
+        self.status_combobox = QComboBox(self)
+        self.status_combobox.addItems(["To Do", "En Cours", "Fait"])
+         # pas de texte invisble dans le combobox
+        self.status_combobox.setStyleSheet("QComboBox { color: red; }")                                                
+
+
+
+        self.layout.addWidget(self.status_combobox)
+
 
 class TaskListWidget(QFrame):
     def __init__(self, text: str, db_manager, parent=None):
@@ -227,7 +252,7 @@ class TaskListWidget(QFrame):
 
             if task_text and priority and person != "":
                 # Insert the task into the database with the deadline
-                self.db_manager.insert_task(task_text, priority, person, "To Do", deadline)
+                self.db_manager.insert_task(task_text, priority, person, "To Do ", deadline)
 
                 # Load tasks from the database after inserting a new task
                 self.load_tasks_from_database()
@@ -247,6 +272,12 @@ class TaskListWidget(QFrame):
                 item = QTableWidgetItem(str(data))
                 self.taskTable.setItem(row_position, col, item)
 
+            # Ajoutez le widget d'état à la cellule appropriée
+            status_widget = StatusWidget(self)
+            status_widget.status_combobox.setCurrentText(task_data[4])  # Sélectionnez la valeur actuelle
+            status_widget.status_combobox.currentIndexChanged.connect(lambda state, r=row_position, sw=status_widget: self.update_task_status(r, sw))
+            self.taskTable.setCellWidget(row_position, 4, status_widget)
+
             # Ajoutez des boutons pour les actions (par exemple, supprimer)
             delete_button = QPushButton("X", self)
             delete_button.setStyleSheet("""
@@ -258,6 +289,17 @@ class TaskListWidget(QFrame):
             delete_button.clicked.connect(lambda _, row=row_position: self.deleteTask(row))
             self.taskTable.setCellWidget(row_position, 6, delete_button)
 
+    def update_task_status(self, row, status_widget):
+        new_status = status_widget.status_combobox.currentText()
+        task_id = self.taskTable.item(row, 0).text()
+
+        # Mettez à jour l'état de la tâche dans la base de données
+        # Vous devrez peut-être ajuster la méthode update_task_status dans DatabaseManager
+        self.db_manager.update_task_status(task_id, new_status)
+
+        # Rafraîchissez le tableau après la mise à jour de l'état
+        self.load_tasks_from_database()
+    
     def deleteTask(self, row):
         reply = QMessageBox.question(
             self,
