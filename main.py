@@ -47,6 +47,23 @@ class DatabaseManager:
         query = "DELETE FROM tasks WHERE id = ?"
         with self.conn:
             self.conn.execute(query, (task_id,))
+    
+    def fetch_last_task(self):
+        query = "SELECT * FROM tasks ORDER BY id DESC LIMIT 1"
+        with self.conn:
+            cursor = self.conn.execute(query)
+            result = cursor.fetchone()
+
+            # Convertir le résultat en un dictionnaire avec des clés appropriées
+            if result:
+                columns = ["id", "task_name", "priority", "person", "status", "time_left"]
+                last_task_dict = dict(zip(columns, result))
+                return last_task_dict
+            else:
+                return None
+    
+    def get_last_task(db_manager):
+        return db_manager.fetch_last_task()
 
 class AddTaskDialog(QDialog):
     def __init__(self, parent=None):
@@ -171,7 +188,7 @@ class TaskListWidget(QFrame):
         header = self.taskTable.horizontalHeader()
         for i in range(7):
             header.setSectionResizeMode(i, QHeaderView.Stretch)
-        self.taskTable.setHorizontalHeaderLabels(["id", "Task Name", "Priority", "Person", "Status", "Time Left", "Progress", "Actions"])
+        self.taskTable.setHorizontalHeaderLabels(["id","Task Name", "Priority", "Person", "Status", "Time Left", "Progress", "Actions"])
 
         self.taskListLayout = QVBoxLayout(self)
         self.taskListLayout.addWidget(self.label, 1, Qt.AlignLeft)
@@ -383,20 +400,11 @@ class HomeInterface(QFrame):
         self.mainLayout.addWidget(self.RecentTask())
 
     def RecentTask(self):
-        recentTaskFrame = QFrame(self)
+        pass
+    
+        
 
-        # Example: Add a label for no recent tasks
-        noTaskLabel = QLabel("Aucune tâche récente.", recentTaskFrame)
-        noTaskLabel.setAlignment(Qt.AlignCenter)
-
-        # TODO: Add your task-related widgets and layout here
-
-        # Example: Create a layout for centering the message
-        layout = QVBoxLayout(recentTaskFrame)
-        layout.addWidget(noTaskLabel)
-
-        recentTaskFrame.setLayout(layout)
-        return recentTaskFrame
+        
 
 
 class Widget(QFrame):
@@ -418,30 +426,14 @@ class Window(FluentWindow):
     def __init__(self):
         super().__init__()
 
-         # Create an instance of DatabaseManager
+        # Create an instance of DatabaseManager
         self.db_manager = DatabaseManager()
 
         # create sub interface
-        self.homeInterface = HomeInterface('Home', self)
+        self.homeInterface = HomeInterface('Home', self)  # Passez db_manager ici
         self.tasklist = TaskListWidget('Task list', self.db_manager, self)
         self.calendar = CalendarWidget('Calendar', self)
         self.settingInterface = Widget('Setting Interface', self)
-
-        def showMessageBox(self):
-        # Use self.db_manager to interact with the database
-            self.db_manager.insert_task("Sample Task", "High", "John Doe", "To Do", "1 day")
-
-            w = MessageBox(
-                '🎉🎉🎉',
-                'Bienvenue dans notre to-do list !',
-                self
-            )
-        # cartes
-
-
-
-
-
 
         self.initNavigation()
         self.initWindow()
