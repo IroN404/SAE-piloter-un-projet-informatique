@@ -65,6 +65,7 @@ class DatabaseManager:
     def get_last_task(db_manager):
         return db_manager.fetch_last_task()
 
+
 class AddTaskDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -74,14 +75,20 @@ class AddTaskDialog(QDialog):
         self.setModal(True)
 
         self.taskLineEdit = QLineEdit(self)
-        self.taskLineEdit.setPlaceholderText("Entrez une tâche...")
+        self.taskLineEdit.setPlaceholderText("Enter a task...")
 
         self.priorityComboBox = QComboBox(self)
         self.priorityComboBox.addItems(["Low", "Medium", "High"])
         self.priorityComboBox.setStyleSheet("QComboBox { color: white; }")
 
         self.personLineEdit = QLineEdit(self)
-        self.personLineEdit.setPlaceholderText("Personne en charge...")
+        self.personLineEdit.setPlaceholderText("Person in charge...")
+
+        # Add the deadline field
+        self.deadlineEdit = QDateEdit(self)
+        self.deadlineEdit.setCalendarPopup(True)
+        self.deadlineEdit.setDate(QDate.currentDate())  # Set the initial date to the current date
+        self.deadlineEdit.setDisplayFormat("yyyy-MM-dd")
 
         self.addButton = QPushButton("Add", self)
         self.addButton.clicked.connect(self.accept)
@@ -90,6 +97,7 @@ class AddTaskDialog(QDialog):
         layout.addRow("Task Name:", self.taskLineEdit)
         layout.addRow("Priority:", self.priorityComboBox)
         layout.addRow("Person:", self.personLineEdit)
+        layout.addRow("Deadline:", self.deadlineEdit)
         layout.addRow(self.addButton)
 
 class TaskListWidget(QFrame):
@@ -215,13 +223,15 @@ class TaskListWidget(QFrame):
             task_text = dialog.taskLineEdit.text()
             priority = dialog.priorityComboBox.currentText()
             person = dialog.personLineEdit.text()
+            deadline = dialog.deadlineEdit.date().toString("yyyy-MM-dd")  # Convert to a string in the format "YYYY-MM-DD"
 
             if task_text and priority and person != "":
-                # Insert the task into the database
-                self.db_manager.insert_task(task_text, priority, person, "To Do", "1 day")
+                # Insert the task into the database with the deadline
+                self.db_manager.insert_task(task_text, priority, person, "To Do", deadline)
 
                 # Load tasks from the database after inserting a new task
                 self.load_tasks_from_database()
+
     
     def add_task_to_table(self, task_data):
         # Effacez le contenu de la table
