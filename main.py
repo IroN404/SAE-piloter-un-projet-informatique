@@ -1,11 +1,13 @@
 # coding:utf-8
 import sys
 import sqlite3
+#pip install PyQt5
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox, QDesktopWidget, QGridLayout, QLabel, QLineEdit, QFormLayout, QComboBox, QTableWidget, QTableWidgetItem, QFrame, QVBoxLayout, QHBoxLayout, QGroupBox, QScrollArea, QSizePolicy, QSpacerItem, QStyle, QStyleOption, QFileDialog, QDialog, QDateEdit, QCheckBox, QProgressBar, QSlider, QDial, QCalendarWidget, QTabWidget, QTabBar, QStackedWidget, QToolButton, QMenu, QMenuBar, QStatusBar, QToolBar, QDockWidget, QStyleFactory, QSystemTrayIcon, QCompleter, QShortcut, QKeySequenceEdit, QSplitter, QInputDialog, QCommandLinkButton, QAbstractItemView, QHeaderView, QStyleOptionViewItem, QStyleOptionTab, QStylePainter, QStyleOptionTabBarBase
 from PyQt5.QtCore import Qt, QUrl, QRect, QDate
 from pathlib import Path
 from PyQt5.QtGui import QIcon, QDesktopServices, QFont
 from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QVBoxLayout, QGridLayout, QWidget
+#pip install PyQt-Fluent-Widgets -i https://pypi.org/simple/
 from qfluentwidgets import (CardWidget,NavigationItemPosition, MessageBox, setTheme, Theme, FluentWindow,ImageLabel, CaptionLabel, ElevatedCardWidget,
                             NavigationAvatarWidget, qrouter, SubtitleLabel, setFont, InfoBadge,IconWidget, PushButton, TransparentToolButton,
                             BodyLabel, InfoBadgePosition,FluentIcon)
