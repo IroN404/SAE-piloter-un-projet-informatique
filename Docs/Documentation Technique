@@ -1,0 +1,47 @@
+## Introduction
+
+Le code fourni est une application de gestion de tâches utilisant le framework PyQt5 pour l'interface graphique et SQLite pour la gestion de base de données. L'application offre des fonctionnalités telles que l'ajout de tâches, la mise à jour de leur statut, la suppression de tâches, et l'affichage d'une liste de tâches.
+
+## Structure du Code
+
+### Modules externes utilisés
+
+Le code utilise plusieurs modules externes, dont PyQt5 pour l'interface graphique, sqlite3 pour la gestion de base de données, et qfluentwidgets pour des composants d'interface utilisateur stylisés.
+
+### Classes Principales
+
+1. **DatabaseManager**: Cette classe gère la connexion à la base de données SQLite et contient des méthodes pour créer la table des tâches, insérer, mettre à jour, et récupérer des tâches.
+
+2. **AddTaskDialog**: Une boîte de dialogue pour ajouter de nouvelles tâches avec des champs tels que le nom de la tâche, la priorité, la personne en charge, et la date limite.
+
+3. **StatusWidget**: Widget pour afficher et mettre à jour le statut d'une tâche (à faire, en cours, fait).
+
+4. **TaskListWidget**: Widget principal pour afficher la liste des tâches avec des fonctionnalités d'ajout, de suppression et de mise à jour.
+
+5. **CalendarWidget**: Widget pour afficher un calendrier avec une interface stylisée.
+
+6. **SettingInterface, HomeInterface, Widget**: Exemples supplémentaires de widgets pour différentes parties de l'application.
+
+7. **Window**: La fenêtre principale de l'application, héritant de FluentWindow. Elle gère l'initialisation de l'interface, la configuration de la barre de navigation, et l'affichage des widgets.
+
+## Utilisation de la Base de Données
+
+La classe **DatabaseManager** est responsable de la gestion de la base de données SQLite. Elle comporte des méthodes pour créer la table des tâches, insérer, mettre à jour, et récupérer des tâches. De plus, elle dispose de méthodes pour supprimer des tâches et récupérer la dernière tâche ajoutée.
+
+## Interface Utilisateur
+
+L'interface utilisateur est créée en utilisant PyQt5 et des composants stylisés provenant de qfluentwidgets. Les différentes parties de l'interface, comme la liste des tâches, la boîte de dialogue d'ajout de tâche, et le calendrier, sont organisées en widgets distincts pour faciliter la maintenance et l'extension.
+
+## Fonctionnalités Principales
+
+1. **Ajout de Tâches**: Les utilisateurs peuvent ajouter de nouvelles tâches en utilisant la boîte de dialogue d'ajout de tâche.
+
+2. **Mise à Jour du Statut des Tâches**: Le statut des tâches peut être mis à jour (à faire, en cours, fait) directement depuis la liste des tâches.
+
+3. **Suppression de Tâches**: Les utilisateurs peuvent supprimer des tâches de la liste.
+
+4. **Affichage de la Liste des Tâches**: La liste des tâches est affichée dans un tableau avec des fonctionnalités de tri et de mise en forme.
+
+## Conclusion
+
+Le code fourni constitue une base solide pour une application de gestion de tâches avec une interface utilisateur élégante. Il est bien organisé, utilise des conventions de codage claires, et exploite des modules externes pour simplifier le développement. L'application peut être étendue et améliorée en ajoutant des fonctionnalités supplémentaires en fonction des besoins spécifiques de l'utilisateur.
