@@ -15,6 +15,7 @@ TaskListWidget: Widget principal pour afficher la liste des tâches avec des fon
 CalendarWidget: Widget pour afficher un calendrier avec une interface stylisée.
 SettingInterface, HomeInterface, Widget: Exemples supplémentaires de widgets pour différentes parties de l'application.
 Window: La fenêtre principale de l'application, héritant de FluentWindow. Elle gère l'initialisation de l'interface, la configuration de la barre de navigation, et l'affichage des widgets.
+
 Utilisation de la Base de Données
 
 La classe DatabaseManager est responsable de la gestion de la base de données SQLite. Elle comporte des méthodes pour créer la table des tâches, insérer, mettre à jour, et récupérer des tâches. De plus, elle dispose de méthodes pour supprimer des tâches et récupérer la dernière tâche ajoutée.
